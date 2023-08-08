@@ -1,0 +1,9 @@
+// Define o display como flexível, o tipo de flex(alinhado ou coluna), alinhamento horizontal e vertical,
+// bem como o espaçamento entre os itens
+@mixin flex($t, $j, $a, $g) {
+  display: flex;
+  flex-direction: $t;
+  justify-content: $j;
+  align-items: $a;
+  gap: $g;
+}
