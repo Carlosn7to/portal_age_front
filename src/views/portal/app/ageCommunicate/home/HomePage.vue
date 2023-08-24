@@ -1,23 +1,28 @@
 <script>
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
 import SubMenuModules from "@/components/portal/app/_fragments/subMenuModules/SubMenuModules.vue";
+import CommunicateComponent from "@/components/portal/app/ageCommunicate/OptionsComponent.vue";
 
 export default defineComponent({
   name: "HomePage",
-  components: {SubMenuModules},
-  data () {
+  components: {CommunicateComponent, SubMenuModules,},
+  data() {
     return {
       subMenu: [
-        {title: 'Principal',
+        {
+          title: 'Principal',
           subItems: [
-            {title: 'Tela Inicial'},
-            {title: 'Gerenciamento'}
-          ]},
-        {title: 'Opções',
+            { title: 'Tela Inicial' },
+            { title: 'Gerenciamento' }
+          ]
+        },
+        {
+          title: 'Opções',
           subItems: [
-            {title: 'Nova comunicação'},
-            {title: 'Comunicação existente'}
-          ]},
+            { title: 'Nova comunicação' },
+            { title: 'Comunicação existente' }
+          ]
+        },
       ],
     }
   }
@@ -25,21 +30,17 @@ export default defineComponent({
 </script>
 
 <template>
-
   <div class="communicate-module">
-    <SubMenuModules
-      :items="subMenu"
-    />
+    <SubMenuModules :items="subMenu" />
+    <CommunicateComponent />
   </div>
-
 </template>
 
 <style scoped lang="scss">
-
 .communicate-module {
   width: 100%;
   height: 100%;
+  @include flex(row, space-between, center, 0);
 }
-
 
 </style>
