@@ -5,7 +5,7 @@ import LoginPage from "@/views/portal/web/LoginPage.vue";
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'LoginPage',
     component: LoginPage
   },

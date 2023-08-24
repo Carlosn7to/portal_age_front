@@ -44,12 +44,13 @@ export default defineComponent({
         },
         data: payload
       }).then((res) => {
+        this.$router.replace('/inicio')
 
         this.SAVE_USER({token: res.data.access_token, firstName: res.data.name})
         this.SAVE_SYSTEM({login: true})
-        this.loading = false
+
         Cookie.set('token', res.data.access_token, {expires: 1} )
-        this.$router.replace('/inicio')
+        this.loading = false
 
 
       }).catch((error) => {

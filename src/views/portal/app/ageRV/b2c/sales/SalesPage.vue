@@ -101,4 +101,16 @@ export default defineComponent({
   }
 }
 
+
+@media (min-width: 1600px) {
+  .container-sales {
+    .data {
+      grid-template-columns: 70% 30%;
+      grid-template-rows: 12% 88%;
+      grid-template-areas: 'D S'
+                          'G S';
+    }
+  }
+}
+
 </style>

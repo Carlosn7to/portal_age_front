@@ -23,7 +23,7 @@ export default {
             }).catch(() => {
             store.commit('SAVE_SYSTEM', {login: false})
 
-            return next({ path: '/'})
+            return next({ path: '/login'})
         })
     },
     management_portal(to, from, next) {

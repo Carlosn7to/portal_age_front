@@ -17,7 +17,7 @@ export default defineComponent({
     <div class="data">
       <div class="item">
         <div class="icon">
-<!--          <img :src="require('@/assets/icons/figures/ageRv/icons/')">-->
+          <img :src="require('@/assets/icons/figures/ageRv/icons/male-avatar.png')" alt="avatar">
         </div>
         <div class="info">
           <h3>
@@ -31,6 +31,7 @@ export default defineComponent({
       </div>
       <div class="item">
         <div class="icon">
+          <img :src="require('@/assets/icons/figures/ageRv/icons/male-avatar2.png')" alt="avatar">
 
         </div>
         <div class="info">
@@ -45,7 +46,7 @@ export default defineComponent({
       </div>
       <div class="item">
         <div class="icon">
-
+          <img :src="require('@/assets/icons/figures/ageRv/icons/female-avatar.png')" alt="avatar">
         </div>
         <div class="info">
           <h3>
@@ -59,7 +60,7 @@ export default defineComponent({
       </div>
       <div class="item">
         <div class="icon">
-
+          <img :src="require('@/assets/icons/figures/ageRv/icons/female-avatar2.png')" alt="avatar">
         </div>
         <div class="info">
           <h3>
@@ -73,7 +74,7 @@ export default defineComponent({
       </div>
       <div class="item">
         <div class="icon">
-
+          <img :src="require('@/assets/icons/figures/ageRv/icons/female-avatar.png')" alt="avatar">
         </div>
         <div class="info">
           <h3>
@@ -141,11 +142,13 @@ export default defineComponent({
       @include flex(row, space-between, center, 1vw);
 
       .icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #fff;
-        border: 1px solid #3F3D56;
+        @include flex(row, center, center, 0);
+        overflow: hidden;
+
+        img {
+          width: 4vw;
+          height: auto;
+        }
       }
 
       .info {
