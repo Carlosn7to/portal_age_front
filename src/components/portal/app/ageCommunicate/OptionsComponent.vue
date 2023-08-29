@@ -1,10 +1,12 @@
 <script>
 import existedCommunicate from "@/components/portal/app/ageCommunicate/ExistingCommunication.vue";
 import NewCommunicate from "@/components/portal/app/ageCommunicate/NewCommunicate.vue";
+import CreateCommunication from "@/components/portal/app/ageCommunicate/CreateCommunication.vue";
+import ViewCommunication from "@/components/portal/app/ageCommunicate/ViewCommunication.vue";
 
 export default {
   name: "OptionsComponent",
-  components: {NewCommunicate, existedCommunicate},
+  components: {ViewCommunication, CreateCommunication, NewCommunicate, existedCommunicate},
   data() {
     return {
       page: 1
@@ -15,19 +17,26 @@ export default {
 
 <template>
   <div class="container-principal">
-    <div class="container-communicate">
-      <template v-if="page === 1">
+    <template v-if="page === 1">
+      <div class="container-communicate">
         <NewCommunicate
             @tradePage="page = 2"
         />
-        <existedCommunicate/>
-      </template>
-    </div>
-    <div>
-      <template v-if="page === 2">
-
-      </template>
-    </div>
+        <existedCommunicate
+            @tradePage="page =3"
+        />
+      </div>
+    </template>
+    <template v-if="page === 2">
+      <div class="container-newCommunicate">
+        <CreateCommunication/>
+      </div>
+    </template>
+    <template v-if="page ===3">
+      <div class="container-viewCommunicate">
+        <ViewCommunication/>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -46,7 +55,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
   flex-direction: row;
   gap: 2vw;
   background-image: url("@/assets/img/app/ageCommunicate/logoBackground.png");

@@ -77,6 +77,7 @@ export default defineComponent({
       <img :src="require('@/assets/icons/figures/welcome.png')" alt="bem_vindo">
     </div>
   </div>
+
 </template>
 
 <style scoped lang="scss">
@@ -241,6 +242,9 @@ export default defineComponent({
   }
 }
 
+.image-welcome-mobile {
+  display: none;
+}
 
 @keyframes up {
   from {
@@ -263,4 +267,96 @@ export default defineComponent({
     transform: translateX(0px);
   }
 }
+
+
+
+@media screen and (max-width: 670px) {
+  .container-main {
+    padding: 4vh 2vw;
+
+    .title-subtitle {
+      .title {
+        h1 {
+          font-size: 2.4rem;
+        }
+      }
+
+      .subtitle {
+        span {
+          font-size: 1.4rem;
+        }
+      }
+    }
+
+    .image-welcome {
+      display: none;
+    }
+
+    .innovations-container {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin-top: 2vh;
+
+      .title {
+        font-size: 1.8rem;
+      }
+
+      .innovations-content {
+        padding: 0;
+        position: relative;
+        left: 0;
+        top: 0;
+        opacity: 1;
+        animation: none;
+
+        .innovation-card {
+          @include flex(column, flex-start, center, 2vw);
+
+          .period {
+            position: relative;
+            height: auto;
+
+            @include flex(column, center, center, 2vh);
+
+            .month {
+
+              @include flex(row, flex-start, center, .5vw);
+
+              span {
+                color: #959595;
+                font-size: 1.2rem;
+                font-weight: 500;
+                position: absolute;
+                left: -2vw;
+                display: none;
+              }
+
+              .foccus {
+                width: 1vw;
+                height: 1vw;
+                border-radius: 50%;
+                background-color: #787878;
+                display: none;
+              }
+            }
+
+            .divisor {
+              width: 1px;
+              height: 40%;
+              @include flex(row, center, center, 0);
+
+              div {
+                width: 2px;
+                height: 100%;
+                background-color: #D9D9D990;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 </style>

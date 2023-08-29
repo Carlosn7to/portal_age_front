@@ -33,6 +33,19 @@ export default defineComponent({
         <router-view></router-view>
       </div>
     </div>
+
+    <div class="container-mobile">
+
+      <div class="header">
+        <HeaderComponent/>
+      </div>
+      <div class="page">
+        <router-view></router-view>
+      </div>
+      <div class="menu">
+        <MenuComponent/>
+      </div>
+    </div>
   </template>
 
 
@@ -137,6 +150,38 @@ h2 {
   .page {
     grid-area: P;
     z-index: 1;
+  }
+}
+
+@media (max-width: 670px) {
+  .container {
+    display: none;
+  }
+
+  .container-mobile {
+    height: 100vh;
+    @include flex(column, flex-start, initial, 0);
+    padding-top: 8vh;
+
+
+    .header {
+      height: 7vh;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+
+    .menu {
+      height: 9vh;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .page {
+      height: 80vh;
+    }
+
   }
 }
 

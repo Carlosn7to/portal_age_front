@@ -40,4 +40,16 @@ export default defineComponent({
   }
 }
 
+@media screen and (max-width: 670px) {
+  .header-login-page {
+
+  }
+
+  .logo {
+    img {
+      width: 20vw;
+    }
+  }
+}
+
 </style>

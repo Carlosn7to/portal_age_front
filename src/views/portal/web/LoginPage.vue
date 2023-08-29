@@ -47,6 +47,13 @@ export default defineComponent({
   //  z-index: 1;
   //  opacity: .4;
   //}
+
+  @media screen and (max-width: 670px) {
+    .card-login-page {
+      width: 80%;
+
+    }
+  }
 }
 
 

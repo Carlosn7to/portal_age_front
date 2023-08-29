@@ -207,6 +207,141 @@ export default defineComponent({
       }
     }
   }
+  @media screen and (max-width: 670px) {
+    .rv-module {
+      overflow-y: auto;
+      overflow-x: hidden ;
+    }
+
+    .search {
+      height: 15%;
+      width: 100%;
+
+      @include flex(row, center, center, 0);
+
+      .box-search {
+        border-radius: 7px;
+        border: 1.5px solid rgba(0, 0, 0, 0.30);
+        background: #FFF;
+        width: 90%;
+        padding: 10px 15px;
+        @include flex(row, flex-start, center, .5vw);
+        margin-bottom: 2vh;
+
+        img {
+          width: 1.5vw;
+
+        }
+
+
+        input {
+          border: none;
+          outline: none;
+          width: 100%;
+        }
+      }
+    }
+
+    .items {
+      width: 100%;
+      padding: 0 2vw;
+      @include flex(row, flex-start, initial, 3vw);
+      flex-wrap: wrap;
+      .item {
+        @include flex(column, center, center, 1vh);
+        min-width: calc((100% / 4) - 3vw);
+        max-width: calc((100% / 4) - 3vw);
+        height: 30vh;
+        border-radius: 15px;
+        border: 1.5px solid rgba(0, 0, 0, 0.30);
+        background: #FFF;
+        padding: 4vh 2vw;
+        cursor: pointer;
+        transition: border-color .3s ease-in-out;
+        animation: up ease-in-out .5s forwards;
+
+
+        &:hover {
+          border-color: #19233B;
+        }
+
+        .icon {
+          margin: 0 auto;
+          border-radius: 5px;
+          img {
+            width: 3.5vw;
+            height: auto;
+          }
+        }
+
+        .description {
+          @include flex(column, flex-start, center, 1vh);
+          .title {
+            text-align: center;
+            h3 {
+              font-size: 1.5rem;
+              font-weight: 600;
+              color: #333;
+            }
+          }
+
+          .subtitle {
+            text-align: center;
+            span {
+              font-size: 1.2rem;
+              font-weight: 500;
+              color: #333;
+            }
+          }
+        }
+      }
+
+      .disable {
+        border: 1.5px dashed rgba(0, 0, 0, 0.10);
+        cursor: default;
+
+        &:hover {
+          border-color: rgba(0, 0, 0, 0.10);
+        }
+
+        .description {
+          .title {
+            h3 {
+              color: #33333330;
+            }
+          }
+
+          .subtitle {
+            span {
+              color: #33333330;
+            }
+          }
+        }
+
+      }
+
+
+      @keyframes up {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    .items {
+      .item {
+        min-width: calc((100% / 2) - 3vw);
+        max-width: calc((100% / 2) - 3vw);
+        height: 30vh;
+        padding: 4vh 2vw;
+      }
+    }
+  }
 }
 
 </style>

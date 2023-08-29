@@ -3,14 +3,24 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "existedCommunicate"
+  name: "existedCommunicate",
+  methods: {
+    tradePage() {
+      this.$emit('tradePage');
+    }
+  },
+    computed: {
+  animationClass() {
+    return 'animate__animated animate__bounceIn'
+  }
+}
 })
 </script>
 
 <template>
   <div>
-    <div class="existedCommunication">
-      <button class="existedSquareButton"></button>
+    <div class="existedCommunication" :class="animationClass">
+      <button class="existedSquareButton" @click="tradePage"></button>
       <h1>Comunicação existente</h1>
       <h2>Editar um agendamento</h2>
     </div>

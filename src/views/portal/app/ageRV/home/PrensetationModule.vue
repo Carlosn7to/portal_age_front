@@ -87,6 +87,29 @@ export default defineComponent({
       </section>
     </template>
   </div>
+
+  <div class="container-prensetation-mobile">
+    <template v-if="module === 'b2c'">
+      <section @scrollend="templates.b2c.length > index ? onScroll(index) : onScroll(index + 1) " class="b2c" v-for="(template, index) in templates.b2c" :key="index">
+        <div class="info">
+          <div class="title">
+            <h2 v-html="template.title"></h2>
+          </div>
+          <div class="description">
+            <p v-for="(item, ind) in template.description" :key="ind" v-html="item"></p>
+            <div>
+              <button @click="tradeRoute" v-if="templates.b2c.length === index + 1">
+                Começar a ganhar comissão
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="figure">
+          <img :src="require(`@/assets/icons/figures/ageRv/b2c/${template.figure}.png`)" alt="figura">
+        </div>
+      </section>
+    </template>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -220,4 +243,46 @@ export default defineComponent({
 
 }
 
+.container-prensetation-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 670px) {
+  .container-prensetation {
+    display: none;
+  }
+
+  .container-prensetation-mobile {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden ;
+
+    .figure {
+      width: 100%;
+      height: 45vh;
+      margin-top: 5vh;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    h2 {
+      font-size: 3rem;
+      margin-top: 3vh;
+      margin-left: 5vw;
+    }
+
+    p {
+      font-size: 2rem;
+      margin-top: 2vh;
+      margin-left: 5vw;
+      text-align: justify;
+      width: 90%;
+    }
+  }
+}
 </style>

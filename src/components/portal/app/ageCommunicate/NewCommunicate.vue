@@ -1,19 +1,25 @@
 <script>
 import {defineComponent} from 'vue'
+import 'animate.css';
 
 export default defineComponent({
   name: "NewCommunicate",
   methods: {
     tradePage() {
-      this.$emit('tradePage')
+      this.$emit('tradePage');
     }
-  }
-})
+  },
+  computed: {
+    entranceAnimation() {
+      return 'animate__animated animate__bounceIn';
+    },
+  },
+});
 </script>
 
 <template>
   <div>
-    <div class="newCommunication">
+    <div class="newCommunication" :class="entranceAnimation">
       <button class="dashedSquareButton" @click="tradePage"></button>
       <h1>Comunicação nova</h1>
       <h2>Começar do zero</h2>
@@ -51,4 +57,5 @@ export default defineComponent({
   background-color: transparent;
   border: none;
 }
+
 </style>
