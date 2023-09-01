@@ -117,24 +117,103 @@ export default {
 
         <div class="checkbox-data">
           <h4>Colunas</h4>
-          <label class='checkbox blue'>
-            <input checked type='checkbox'>
-            <span class='indicator'></span>
-            Blue checkbox
-          </label>
-          <div class="checkbox">
-            <input type="checkbox" id="col2" name="col2" value="col2">
-            <label for="col2">Coluna 2</label>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
           </div>
-          <div class="checkbox">
-            <input type="checkbox" id="col3" name="col3" value="col3">
-            <label for="col3">Coluna 3</label>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
           </div>
-          <div class="checkbox">
-            <input type="checkbox" id="col4" name="col4" value="col4">
-            <label for="col4">Coluna 4</label>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
+          </div>
+          <div class="checkbox-container">
+            <label class='checkbox blue'>
+              <input checked type='checkbox'>
+              <span class='indicator'></span>
+            </label>
+            <span>Coluna 1</span>
           </div>
         </div>
+        <p>
+          Selecione a periocidade que deseja receber o relatório.
+        </p>
+
+        <select name="period" id="period">
+          <option>
+            Dia
+          </option>
+          <option>
+            Período
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -283,6 +362,7 @@ export default {
 
     .content {
       padding: 2vh 1vw;
+      @include flex(column, flex-start, initial, 3vh);
       p {
         font-size: 1.4rem;
         padding: 0 1vw;
@@ -292,21 +372,40 @@ export default {
       }
 
       .checkbox-data {
-        margin-top: 2vh;
+        @include flex(row, flex-start, center, .5vw);
+        flex-wrap: wrap;
+        width: 80%;
+
         h4 {
           font-size: 1.2rem;
           color: #00000050;
           font-weight: 600;
           text-align: left;
           margin-bottom: 2vh;
+          width: 100%;
         }
 
-        .checkbox {
-          padding: .5vh 1.5vw;
+        .checkbox-container {
+          padding: .2vh .5vw;
           @include flex(row, flex-start, center, .5vw);
+          width: 45%;
+
+
+          span {
+            font-size: 1.2rem;
+            font-weight: 500;
+          }
 
         }
 
+
+      }
+
+
+      select {
+        border: 1px solid red;
+        outline: none;
+        padding: 5px 10px;
       }
     }
 
@@ -316,20 +415,19 @@ export default {
 /* Checkbox styles */
 
 $black: #2D3137;
-$blue: #3785BC;
+$blue: rgba(25, 35, 59, 1);
 $grey: #D6D6D6;
 $white: #FFFFFF;
 
 $border-radius: 3px;
 
 @mixin checkbox($color) {
-  margin-right: 1rem;
-  padding-left: 1.75rem;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  padding: 1vh .5vw;
 
   input[type="checkbox"] {
     position: absolute;
@@ -356,8 +454,8 @@ $border-radius: 3px;
     position: absolute;
     left: 0;
     top: -2px;
-    width:  1.8rem;
-    height: 1.8rem;
+    width:  1.6rem;
+    height: 1.6rem;
     background-color: lighten($black, 65%);
     border: 2px solid lighten($black, 65%);
 

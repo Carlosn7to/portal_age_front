@@ -77,6 +77,7 @@ export default defineComponent({
       <img :src="require('@/assets/icons/figures/welcome.png')" alt="bem_vindo">
     </div>
   </div>
+
 </template>
 
 <style scoped lang="scss">
@@ -239,6 +240,13 @@ export default defineComponent({
       display: block;
     }
   }
+}
+
+.container-mobile {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: red;
 }
 
 

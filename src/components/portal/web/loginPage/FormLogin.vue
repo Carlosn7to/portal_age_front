@@ -47,7 +47,7 @@ export default defineComponent({
         this.$router.replace('/inicio')
 
         this.SAVE_USER({token: res.data.access_token, firstName: res.data.name})
-        this.SAVE_SYSTEM({login: true})
+        this.SAVE_SYSTEM({login: true, module: 'Página inicial'})
 
         Cookie.set('token', res.data.access_token, {expires: 1} )
         this.loading = false

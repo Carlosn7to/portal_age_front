@@ -1,14 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/portal/app/main/home/HomePage.vue'
 import guard from '/services/middleware/Auth.js'
-import LoginPage from "@/views/portal/web/LoginPage.vue";
 
 const routes = [
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: LoginPage
-  },
+
   {
     path: '/inicio',
     name: 'HomePage',
@@ -35,8 +30,8 @@ const routes = [
   },
   {
     path: '/rv/b2c/vendas',
-    name: 'SalesPage',
-    component: () => import('@/views/portal/app/ageRV/b2c/sales/SalesPage.vue'),
+    name: 'MainPage',
+    component: () => import('@/views/portal/app/ageRV/b2c/sales/MainPage.vue'),
     beforeEnter: [
       guard.auth,
     ]
