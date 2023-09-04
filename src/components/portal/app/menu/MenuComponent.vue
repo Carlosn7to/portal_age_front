@@ -20,7 +20,7 @@ export default defineComponent({
 <template>
   <div class="menu-container">
     <div class="logo">
-      <img :src="require('@/assets/img/identifyBusiness/logo_white.png')" alt="logo_age">
+      <img :src="require('@/assets/img/identifyBusiness/logo_age_orange.png')" alt="logo_age">
     </div>
 
     <div class="items-menu">
@@ -103,7 +103,8 @@ export default defineComponent({
 .menu-container {
   width: 100%;
   height: 100%;
-  background-color: #19233B;
+  background-color: #F5F7FB;
+  border-right: 1px solid #00000020;
 
   .logo {
     padding: 3vh 0;
@@ -118,14 +119,24 @@ export default defineComponent({
 
 
   .items-menu {
-    @include flex(column, flex-start, initial, 3vh);
+    @include flex(column, flex-start, initial, 5vh);
     padding: 2vh 1vw;
 
     .routed {
       .item {
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .6);
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .2);
         border-radius: 10px;
-        background-color: rgba(38, 53, 87, 1);
+        background: rgb(255,182,0);
+        background: linear-gradient(62deg, rgba(255,182,0,1) 32%, rgba(255,92,74,1) 100%);
+
+        svg {
+          fill: #fff;
+
+          &:hover {
+            fill: #f1f1f1;
+          }
+        }
+
       }
     }
 
@@ -133,17 +144,14 @@ export default defineComponent({
       @include flex(row, center, center, 0);
       position: relative;
       padding: 10px 5px;
-      transition: all ease-in-out .4s;
+      transition: background-color ease-in-out .4s;
       svg {
-        fill: #fff;
+        fill: #1A1C1E;
         width: 1.2vw;
         height: auto;
         cursor: pointer;
-        transition: fill ease-in-out .4s;
+        transition: fill ease-in-out .1s;
 
-        &:hover {
-          fill: #d7d7d7;
-        }
       }
 
       &:hover {

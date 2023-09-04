@@ -1,6 +1,41 @@
 <script>
+import {AXIOS} from "../../../../../services/api.ts";
+import Cookie from "js-cookie";
+
 export default {
-  name: "ReportPage"
+  name: "ReportPage",
+  data () {
+    return {
+      reports: [],
+      report: [],
+      search: ''
+    }
+  },
+  methods: {
+      getReports () {
+        AXIOS({
+          method: 'GET',
+          url: 'agereport/report/reports',
+          headers: {
+            "Autorizathion": "Bearer "+Cookie.get('token')
+          }
+        }).then(res => {
+          this.reports = res.data
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+  },
+  computed: {
+    reportFiltered () {
+      return this.reports.filter(item => {
+        return item.nome.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  },
+  mounted() {
+    this.getReports()
+  }
 }
 </script>
 
@@ -15,7 +50,7 @@ export default {
             <path d="M17.8759 8.93619C17.8759 10.9082 17.2356 12.7298 16.157 14.2077L21.5971 19.651C22.1343 20.1881 22.1343 21.0602 21.5971 21.5972C21.06 22.1343 20.1877 22.1343 19.6506 21.5972L14.2105 16.1539C12.7323 17.2365 10.9103 17.8724 8.93794 17.8724C4.00059 17.8724 0 13.8726 0 8.93619C0 3.9998 4.00059 0 8.93794 0C13.8753 0 17.8759 3.9998 17.8759 8.93619ZM8.93794 15.1228C9.75053 15.1228 10.5552 14.9628 11.3059 14.6519C12.0566 14.341 12.7388 13.8853 13.3134 13.3108C13.888 12.7363 14.3438 12.0543 14.6547 11.3037C14.9657 10.5531 15.1257 9.74863 15.1257 8.93619C15.1257 8.12376 14.9657 7.31928 14.6547 6.56868C14.3438 5.81809 13.888 5.13609 13.3134 4.56161C12.7388 3.98713 12.0566 3.53143 11.3059 3.22052C10.5552 2.90962 9.75053 2.7496 8.93794 2.7496C8.12534 2.7496 7.32071 2.90962 6.56997 3.22052C5.81923 3.53143 5.13709 3.98713 4.5625 4.56161C3.98791 5.13609 3.53212 5.81809 3.22115 6.56868C2.91019 7.31928 2.75013 8.12376 2.75013 8.93619C2.75013 9.74863 2.91019 10.5531 3.22115 11.3037C3.53212 12.0543 3.98791 12.7363 4.5625 13.3108C5.13709 13.8853 5.81923 14.341 6.56997 14.6519C7.32071 14.9628 8.12534 15.1228 8.93794 15.1228Z" fill="black" fill-opacity="0.15"/>
           </svg>
           <input type="text" id="search" name="search" autocomplete="off"
-                 placeholder="Pesquisar relatório...">
+                 placeholder="Pesquisar relatório..." v-model="search">
         </div>
       </div>
       <div class="data-reports">
@@ -34,67 +69,16 @@ export default {
           </div>
         </div>
         <div class="body-reports">
-          <div style="animation-delay: .1s" class="report">
+          <div @click="report = item"
+              :style="{animationDelay : index * .1+'s'}" class="report" v-for="(item, index) in reportFiltered" :key="index">
             <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
+              <h4>{{ item.nome }}</h4>
             </div>
             <div class="item">
-              <h4>Teste</h4>
+              <h4>-</h4>
             </div>
             <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-              </button>
-            </div>
-          </div>
-          <div style="animation-delay: .2s" class="report">
-            <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div style="animation-delay: .3s" class="report">
-            <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-              </button>
-            </div>
-          </div>
-          <div style="animation-delay: .4s" class="report">
-            <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
+              <h4>-</h4>
             </div>
             <div class="item" style="width: 30%">
               <button>
@@ -117,89 +101,12 @@ export default {
 
         <div class="checkbox-data">
           <h4>Colunas</h4>
-          <div class="checkbox-container">
+          <div class="checkbox-container" v-for="(item, index) in report.cabecalhos" :key="index">
             <label class='checkbox blue'>
               <input checked type='checkbox'>
               <span class='indicator'></span>
             </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
-          </div>
-          <div class="checkbox-container">
-            <label class='checkbox blue'>
-              <input checked type='checkbox'>
-              <span class='indicator'></span>
-            </label>
-            <span>Coluna 1</span>
+            <span>{{ item.column }}</span>
           </div>
         </div>
         <p>
@@ -262,6 +169,7 @@ export default {
     }
 
     .data-reports {
+      height: 85%;
       .header-reports {
         width: 100%;
         @include flex(row, space-between, center, 0);
@@ -285,6 +193,8 @@ export default {
       }
 
       .body-reports {
+        overflow-y: auto;
+        max-height: 85%;
         .report {
           width: 100%;
           @include flex(row, space-between, center, 0);
@@ -301,7 +211,7 @@ export default {
               font-size: 1.2rem;
               color: #000;
               font-weight: 500;
-              text-align: center;
+              text-align: left;
 
             }
 
@@ -310,10 +220,12 @@ export default {
             button {
               margin: 0 auto;
               border-radius: 5px;
-              background: #19233B;
-              color: #efefef;
-              border: none;
+              background: rgb(255,182,0);
+              background: linear-gradient(62deg, rgba(255,182,0,1) 32%, rgba(255,92,74,1) 100%);
+              color: #fff;
               padding: 7px 15px;
+              border: none;
+              box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
               cursor: pointer;
               transition: background-color .2s ease-in-out, color ease-in-out .2s;
               @include flex(row, center, center, .8vw);
@@ -374,7 +286,7 @@ export default {
       .checkbox-data {
         @include flex(row, flex-start, center, .5vw);
         flex-wrap: wrap;
-        width: 80%;
+        width: 100%;
 
         h4 {
           font-size: 1.2rem;
@@ -388,12 +300,14 @@ export default {
         .checkbox-container {
           padding: .2vh .5vw;
           @include flex(row, flex-start, center, .5vw);
-          width: 45%;
+          width: 48%;
 
 
           span {
             font-size: 1.2rem;
             font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
         }
@@ -415,9 +329,10 @@ export default {
 /* Checkbox styles */
 
 $black: #2D3137;
-$blue: rgba(25, 35, 59, 1);
+$blue: #1A1C1E;
 $grey: #D6D6D6;
 $white: #FFFFFF;
+
 
 $border-radius: 3px;
 

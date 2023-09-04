@@ -39,14 +39,11 @@ export default defineComponent({
 <template>
   <div class="container-sales">
     <SubMenuModules :items="subMenu"/>
-    <div class="content">
       <div class="title">
         <h2>Painel {{ page.title }}</h2>
         <span>{{ page.subtitle }}</span>
       </div>
       <SalesComponent v-if="page.actual === 'sales'"/>
-
-    </div>
   </div>
 </template>
 

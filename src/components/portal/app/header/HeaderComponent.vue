@@ -56,7 +56,7 @@ export default defineComponent({
 .header-container {
   width: 100%;
   height: 100%;
-  background-color: rgba(245, 247, 251, 1);
+  background-color: #F5F7FB;
   @include flex(row, flex-end, center, 0);
 
 
