@@ -8,16 +8,18 @@ export default {
     return {
       reports: [],
       report: [],
-      search: ''
+      search: '',
+      selectedOptionsReport: [],
+      typeDateReport: 'day'
     }
   },
   methods: {
-      getReports () {
+    getReports () {
         AXIOS({
           method: 'GET',
           url: 'agereport/report/reports',
           headers: {
-            "Autorizathion": "Bearer "+Cookie.get('token')
+            "Authorization": "Bearer "+Cookie.get('token')
           }
         }).then(res => {
           this.reports = res.data
@@ -25,6 +27,30 @@ export default {
           console.log(err)
         })
     },
+    downloadExcel () {
+      AXIOS({
+        method: 'GET',
+        url: `agereport/report-download/${this.report.id}`,
+        headers: {
+          'Authorization': 'Bearer '+Cookie.get('token')
+        },
+        params: {paramnsId: this.selectedOptionsReport},
+        responseType: 'blob',
+      }).then((res) => {
+
+        let blob = new Blob([res.data],
+            { type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = this.report.nome_arquivo
+        link.click()
+
+      })
+    },
+    checkAllCheckboxes () {
+      this.selectedOptionsReport = this.report.parametros.map(item => item.id);
+
+    }
   },
   computed: {
     reportFiltered () {
@@ -69,7 +95,7 @@ export default {
           </div>
         </div>
         <div class="body-reports">
-          <div @click="report = item"
+          <div
               :style="{animationDelay : index * .1+'s'}" class="report" v-for="(item, index) in reportFiltered" :key="index">
             <div class="item" style="width: 35%; justify-content: left">
               <h4>{{ item.nome }}</h4>
@@ -81,8 +107,8 @@ export default {
               <h4>-</h4>
             </div>
             <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
+              <button  @click="report = item; checkAllCheckboxes()">
+                <span>Visualizar Relatório</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
               </button>
             </div>
@@ -101,26 +127,29 @@ export default {
 
         <div class="checkbox-data">
           <h4>Colunas</h4>
-          <div class="checkbox-container" v-for="(item, index) in report.cabecalhos" :key="index">
+          <div class="checkbox-container" v-for="(item, index) in report.parametros" :key="index">
             <label class='checkbox blue'>
-              <input checked type='checkbox'>
+              <input checked type='checkbox' :value="item.id" :id="item.id" v-model="selectedOptionsReport">
               <span class='indicator'></span>
             </label>
-            <span>{{ item.column }}</span>
+            <span>{{ item.name }}</span>
           </div>
         </div>
         <p>
           Selecione a periocidade que deseja receber o relatório.
         </p>
 
-        <select name="period" id="period">
-          <option>
+        <select name="period" id="period" v-model="typeDateReport">
+          <option value="day" selected>
             Dia
           </option>
-          <option>
+          <option value="period">
             Período
           </option>
         </select>
+        <button @click="downloadExcel">
+          Baixar relatório
+        </button>
       </div>
     </div>
   </div>
@@ -273,6 +302,8 @@ export default {
 
 
     .content {
+      height: 80%;
+
       padding: 2vh 1vw;
       @include flex(column, flex-start, initial, 3vh);
       p {
@@ -287,6 +318,8 @@ export default {
         @include flex(row, flex-start, center, .5vw);
         flex-wrap: wrap;
         width: 100%;
+        max-height: 70%;
+        overflow-y: auto;
 
         h4 {
           font-size: 1.2rem;
@@ -317,9 +350,36 @@ export default {
 
 
       select {
-        border: 1px solid red;
+        width: 100%;
+        padding: 10px 8px;
+        border-radius: 5px;
         outline: none;
-        padding: 5px 10px;
+        border: 1px solid #edeae9;
+        transition: border .2s ease-in-out;
+        margin-bottom: 10px;
+      }
+
+      button {
+        margin: 0 auto;
+        border-radius: 5px;
+        background: rgb(255,182,0);
+        background: linear-gradient(62deg, rgba(255,182,0,1) 32%, rgba(255,92,74,1) 100%);
+        color: #fff;
+        padding: 7px 15px;
+        border: none;
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+        cursor: pointer;
+        transition: background-color .2s ease-in-out, color ease-in-out .2s;
+        @include flex(row, center, center, .8vw);
+
+        &:hover {
+          background-color: #1D2A48;
+          color: #fff;
+        }
+
+        svg {
+          fill: #FFFFFF;
+        }
       }
     }
 
@@ -329,7 +389,7 @@ export default {
 /* Checkbox styles */
 
 $black: #2D3137;
-$blue: #1A1C1E;
+  $blue: #1A1C1E;
 $grey: #D6D6D6;
 $white: #FFFFFF;
 
