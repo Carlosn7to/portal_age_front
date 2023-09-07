@@ -8,25 +8,58 @@ const routes = [
     path: '/inicio',
     name: 'HomePage',
     component: HomePage,
-    beforeEnter: [
-      guard.auth,
-    ]
+    beforeEnter: (to, from, next) => {
+      guard.auth(to, from, next);
+
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        import('@/views/portal/mobile/main/HomePageMobile.vue').then((module) => {
+          to.matched[0].components.default = module.default;
+          next();
+        });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/rv/inicio',
     name: 'RVHomePage',
     component: () => import('@/views/portal/app/ageRV/home/HomePage.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
+    beforeEnter: (to, from, next) => {
+      guard.auth(to, from, next);
+
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        import('@/views/portal/mobile/AgeRV/home/HomePageMobile.vue').then((module) => {
+          to.matched[0].components.default = module.default;
+          next();
+        });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/rv/b2c/inicio',
     name: 'PresentationModule',
     component: () => import('@/views/portal/app/ageRV/home/PrensetationModule.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
+    beforeEnter: (to, from, next) => {
+      guard.auth(to, from, next);
+
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        import('@/views/portal/mobile/AgeRV/home/PresentationModule.vue').then((module) => {
+          to.matched[0].components.default = module.default;
+          next();
+        });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/rv/b2c/vendas',
@@ -69,6 +102,14 @@ const routes = [
     ]
   },
   {
+    path: '/comunica/nova',
+    name: 'newCommunication',
+    component: () => import('@/views/portal/app/ageCommunicate/newCommunicate/newCommunication.vue'),
+    beforeEnter: [
+      guard.auth,
+    ]
+  },
+  {
     path: '/ajuda/inicio',
     name: 'HelpHomePage',
     component: () => import('@/views/portal/app/ageHelp/home/HomePage.vue'),
@@ -86,7 +127,6 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
 
 
 export default router
