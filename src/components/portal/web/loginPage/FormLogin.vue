@@ -6,7 +6,7 @@ import Cookie from 'js-cookie'
 
 export default defineComponent({
   name: "FormLogin",
-  data () {
+  data() {
     return {
       payload: {
         email: '',
@@ -23,10 +23,10 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations([
-       'SAVE_SYSTEM',
-        'SAVE_USER'
+      'SAVE_SYSTEM',
+      'SAVE_USER'
     ]),
-    login () {
+    login() {
 
       this.loading = true
       this.response.display = false
@@ -49,13 +49,13 @@ export default defineComponent({
         this.SAVE_USER({token: res.data.access_token, firstName: res.data.name})
         this.SAVE_SYSTEM({login: true, module: 'Página inicial'})
 
-        Cookie.set('token', res.data.access_token, {expires: 1} )
+        Cookie.set('token', res.data.access_token, {expires: 1})
         this.loading = false
 
 
       }).catch((error) => {
         this.loading = false
-        if(error.response) {
+        if (error.response) {
           const errorResponse = error.response.status
           switch (errorResponse) {
             case 401:
@@ -94,27 +94,31 @@ export default defineComponent({
   <div class="response" v-if="response.display" :style="{padding : response.display ? '4vh 0' : '1vh 0'}">
     <span> <b>{{ response.status }}</b> {{ response.message }}</span>
   </div>
+  <div class="card-login-page">
   <div class="form-login-page">
-    <form action="#" @submit.prevent="login" :class="response.class">
+    <form action="#" @submit.prevent="login" :class="response.class" name="login" id="login">
       <input type="text" minlength="6" name="email" id="email"
              v-model="payload.email" placeholder="Usuário" autocomplete="off">
       <input type="password" minlength="8" maxlength="30" name="password" id="password"
              v-model="payload.password" placeholder="Senha" autocomplete="off">
-      <button v-if="! loading">
-        Entrar
-      </button>
-      <div class="loading" v-else>
-        <div class="loading-log">
-          <div class="loadingio-spinner-rolling-i7it2319hb">
-            <div class="ldio-et2shv9jupa">
-              <div>
+    </form>
+  </div>
+  </div>
+  <div class="button-form">
+    <button v-if="! loading" @click="login">
+      Entrar
+    </button>
+    <div class="loading" v-else>
+      <div class="loading-log">
+        <div class="loadingio-spinner-rolling-i7it2319hb">
+          <div class="ldio-et2shv9jupa">
+            <div>
 
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -149,12 +153,18 @@ export default defineComponent({
   }
 }
 
-
+.card-login-page {
+  width: 100%;
+  padding: 4vh 0 6vh 0;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  border-radius: 7px;
+  z-index: 3;
+}
 
 .form-login-page {
   height: 60%;
   @include flex(row, center, center, 0);
-
 
   form {
     width: 80%;
@@ -172,7 +182,7 @@ export default defineComponent({
       transition: border-bottom-color ease-in-out .4s;
 
       &:focus {
-        border-color: #19233B;
+        border-bottom-color: #FFB600;
       }
     }
 
@@ -204,9 +214,14 @@ export default defineComponent({
         @include flex(column, flex-end, center, 0vh);
 
         @keyframes ldio-et2shv9jupa {
-          0% { transform: translate(-50%,-50%) rotate(0deg); }
-          100% { transform: translate(-50%,-50%) rotate(360deg); }
+          0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+          100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+          }
         }
+
         .ldio-et2shv9jupa div {
           position: absolute;
           width: 30px;
@@ -215,17 +230,20 @@ export default defineComponent({
           border-top-color: transparent;
           border-radius: 50%;
         }
+
         .ldio-et2shv9jupa div {
           animation: ldio-et2shv9jupa 1s linear infinite;
           top: 50px;
           left: 50px
         }
+
         .loadingio-spinner-rolling-i7it2319hb {
           width: 100px;
           height: 70px;
           display: inline-block;
           overflow: hidden;
         }
+
         .ldio-et2shv9jupa {
           width: 100%;
           height: 100%;
@@ -234,7 +252,10 @@ export default defineComponent({
           backface-visibility: hidden;
           transform-origin: 0 0;
         }
-        .ldio-et2shv9jupa div { box-sizing: content-box; }
+
+        .ldio-et2shv9jupa div {
+          box-sizing: content-box;
+        }
       }
 
     }
@@ -263,7 +284,34 @@ export default defineComponent({
     }
   }
 
+}
 
+.button-form {
+  width: 60%;
+  height: 20%;
+  @include flex(row, center, center, 0);
+  margin: auto;
+  margin-top: 3vh;
+
+  button {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(90deg, #FFB600 -10.98%, #F93822 150.68%);
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+
+    &:hover {
+      background: linear-gradient(90deg, #FFB600 110.68%, #F93822 -30.98%);
+      color: #fff;
+    }
+
+  }
 }
 
 </style>

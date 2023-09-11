@@ -101,14 +101,14 @@ const routes = [
       guard.auth,
     ]
   },
-  {
-    path: '/comunica/nova',
-    name: 'newCommunication',
-    component: () => import('@/views/portal/app/ageCommunicate/newCommunicate/newCommunication.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
-  },
+  // {
+  //   path: '/comunica/nova',
+  //   name: 'newCommunication',
+  //   component: () => import('@/views/portal/app/ageCommunicate/newCommunicate/newCommunication.vue'),
+  //   beforeEnter: [
+  //     guard.auth,
+  //   ]
+  // },
   {
     path: '/ajuda/inicio',
     name: 'HelpHomePage',
