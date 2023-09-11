@@ -63,7 +63,7 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   z-index: 2;
-  margin-bottom: 2vh;
+  margin-bottom: 3vh;
 
   p {
     font-size: 1.5rem;

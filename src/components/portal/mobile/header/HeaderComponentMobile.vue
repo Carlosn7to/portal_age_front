@@ -7,7 +7,7 @@ export default {
 <template>
   <div class="container-menu">
     <div class="container-logo">
-      <img src="@/assets/img/identifyBusiness/AgeLogoMobile.svg" alt="">
+      <img src="@/assets/img/identifyBusiness/ageLogoMobile.svg" alt="">
     </div>
     <div class="container-icons">
       <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">

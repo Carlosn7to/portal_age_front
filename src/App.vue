@@ -5,21 +5,48 @@ import LoginPage from "@/views/portal/web/LoginPage.vue";
 import MenuComponent from "@/components/portal/app/menu/MenuComponent.vue";
 import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue";
 import AlertComponent from "@/components/portal/app/_fragments/alert/AlertComponent.vue";
+import MenuComponentMobile from "@/components/portal/mobile/menu/MenuComponentMobile.vue";
+import HeaderComponentMobile from "@/components/portal/mobile/header/HeaderComponentMobile.vue";
 
 export default defineComponent({
   name: "App",
-  components: {AlertComponent, HeaderComponent, MenuComponent, LoginPage},
+  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
   computed: {
     ...mapGetters([
       'system'
-    ])
-  }
+    ]),
+    isMobile() {
+      return window.innerWidth <= 768;
+    }
+  },
+  data() {
+    return {
+      showMenu: false
+    }
+  },
 })
 </script>
 <template>
 
   <template v-if="system.login === false">
     <LoginPage/>
+  </template>
+
+  <template v-if="isMobile">
+    <div class="container-mobile">
+      <div class="overlay" v-if="showMenu" @click="showMenu = false"></div>
+      <div class="header-mobile">
+        <HeaderComponentMobile/>
+      </div>
+      <div class="page-mobile" @click="showMenu = false">
+        <router-view></router-view>
+      </div>
+      <div class="menu-mobile">
+        <MenuComponentMobile :showMenu="showMenu" @menu="showMenu = true"/>
+      </div>
+    </div>
+
+    <AlertComponent v-if="system.alert.display === true"/>
   </template>
 
   <template v-else>
@@ -142,4 +169,22 @@ h2 {
   }
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo escura com opacidade */
+  z-index: 2; /* Coloque-o acima dos outros componentes, mas abaixo do menu */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.menu-mobile {
+  position: relative;
+  z-index: 5;
+}
 </style>
