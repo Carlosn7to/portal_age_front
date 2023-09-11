@@ -100,7 +100,7 @@ export default defineComponent({
       <input type="text" minlength="6" name="email" id="email"
              v-model="payload.email" placeholder="Usuário" autocomplete="off">
       <input type="password" minlength="8" maxlength="30" name="password" id="password"
-             v-model="payload.password" placeholder="Senha" autocomplete="off">
+             v-model="payload.password" placeholder="Senha" autocomplete="off" @keyup.enter="login">
     </form>
   </div>
   </div>
