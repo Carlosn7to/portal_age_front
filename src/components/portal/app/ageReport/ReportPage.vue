@@ -1,6 +1,7 @@
 <script>
 import {AXIOS} from "../../../../../services/api.ts";
 import Cookie from "js-cookie";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: "ReportPage",
@@ -10,10 +11,12 @@ export default {
       report: [],
       search: '',
       selectedOptionsReport: [],
-      typeDateReport: 'day'
+      typeDateReport: 'day',
+      preview: false
     }
   },
   methods: {
+    ...mapMutations(['SAVE_ALERT']),
     getReports () {
         AXIOS({
           method: 'GET',
@@ -28,6 +31,17 @@ export default {
         })
     },
     downloadExcel () {
+
+      const reportId = this.report.id
+
+      this.reports.map((item) => {
+        if (item.id === reportId) {
+          item.status = true
+        }
+      })
+
+      this.SAVE_ALERT({display: true, type: 'info', title: 'Extraindo relatório', msg: 'Avisaremos quando estiver pronto.'})
+
       AXIOS({
         method: 'GET',
         url: `agereport/report-download/${this.report.id}`,
@@ -37,6 +51,12 @@ export default {
         params: {paramnsId: this.selectedOptionsReport},
         responseType: 'blob',
       }).then((res) => {
+
+        this.reports.map((item) => {
+          if (item.id === reportId) {
+            item.status = false
+          }
+        })
 
         let blob = new Blob([res.data],
             { type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
@@ -53,6 +73,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['system']),
     reportFiltered () {
       return this.reports.filter(item => {
         return item.nome.toLowerCase().includes(this.search.toLowerCase())
@@ -107,9 +128,12 @@ export default {
               <h4>-</h4>
             </div>
             <div class="item" style="width: 30%">
-              <button  @click="report = item; checkAllCheckboxes()">
+              <button v-if="! item.status"  @click="report = item; checkAllCheckboxes(); preview = true">
                 <span>Visualizar Relatório</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+              </button>
+              <button v-else>
+                <span>Extraindo Relatório</span>
               </button>
             </div>
           </div>
@@ -125,31 +149,57 @@ export default {
         Customize seu relatório com o que você deseja visualizar.
       </p>
 
-        <div class="checkbox-data">
-          <h4>Colunas</h4>
-          <div class="checkbox-container" v-for="(item, index) in report.parametros" :key="index">
-            <label class='checkbox blue'>
-              <input checked type='checkbox' :value="item.id" :id="item.id" v-model="selectedOptionsReport">
-              <span class='indicator'></span>
-            </label>
-            <span>{{ item.name }}</span>
+        <template v-if="preview">
+          <div class="checkbox-data">
+            <h4>Colunas</h4>
+            <div class="checkbox-container" v-for="(item, index) in report.parametros" :key="index">
+              <label class='checkbox blue'>
+                <input checked type='checkbox' :value="item.id" :id="item.id" v-model="selectedOptionsReport">
+                <span class='indicator'></span>
+              </label>
+              <span>{{ item.name }}</span>
+            </div>
           </div>
-        </div>
-        <p>
-          Selecione a periocidade que deseja receber o relatório.
-        </p>
 
-        <select name="period" id="period" v-model="typeDateReport">
-          <option value="day" selected>
-            Dia
-          </option>
-          <option value="period">
-            Período
-          </option>
-        </select>
-        <button @click="downloadExcel">
-          Baixar relatório
-        </button>
+
+          <div class="date-options">
+            <template v-if="report.isPeriodo != 0 || report.isPeriodoHora != 0">
+              <p>
+                Selecione a periocidade que deseja receber o relatório.
+              </p>
+              <br>
+              <select name="period" id="period" v-model="typeDateReport">
+                <option value="day" selected>
+                  Dia
+                </option>
+                <option value="period">
+                  Período
+                </option>
+              </select>
+              <div class="date">
+                <template v-if="typeDateReport === 'day'">
+                  <input type="date" name="day" id="day">
+                </template>
+                <template v-else>
+                  <div class="period">
+                    <input type="date" name="firstPeriod" id="firstPeriod">
+                    <label for="firstPeriod">Data inicio</label>
+                  </div>
+
+                  <div class="period">
+                    <input type="date" name="lastPeriod" id="lastPeriod">
+                    <label for="lastPeriod">Data Fim</label>
+                  </div>
+                </template>
+              </div>
+            </template>
+            <br>
+            <button @click="downloadExcel">
+              Baixar relatório
+            </button>
+          </div>
+        </template>
+
       </div>
     </div>
   </div>
@@ -291,6 +341,8 @@ export default {
   .preview {
     width: 30%;
     height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
     border-radius: 7px;
     border: 1.5px solid rgba(95, 104, 122, 0.30);
 
@@ -318,8 +370,6 @@ export default {
         @include flex(row, flex-start, center, .5vw);
         flex-wrap: wrap;
         width: 100%;
-        max-height: 70%;
-        overflow-y: auto;
 
         h4 {
           font-size: 1.2rem;
@@ -349,14 +399,41 @@ export default {
       }
 
 
-      select {
-        width: 100%;
-        padding: 10px 8px;
-        border-radius: 5px;
-        outline: none;
-        border: 1px solid #edeae9;
-        transition: border .2s ease-in-out;
-        margin-bottom: 10px;
+      .date-options {
+        select {
+          width: 100%;
+          padding: 10px 8px;
+          border-radius: 5px;
+          outline: none;
+          border: 1px solid #edeae9;
+          transition: border .2s ease-in-out;
+          margin-bottom: 10px;
+        }
+
+        .date {
+          @include flex(column, flex-start, initial, 1vh);
+
+          input {
+            width: 50%;
+            padding: 10px 8px;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid #edeae9;
+            transition: border .2s ease-in-out;
+          }
+
+          label {
+            font-size: 1.2rem;
+            color: #000;
+            font-weight: 500;
+          }
+
+          .period {
+            @include flex(row, flex-start, center, 1vw);
+          }
+
+        }
+
       }
 
       button {
@@ -371,6 +448,7 @@ export default {
         cursor: pointer;
         transition: background-color .2s ease-in-out, color ease-in-out .2s;
         @include flex(row, center, center, .8vw);
+        margin-bottom: 2vh;
 
         &:hover {
           background-color: #1D2A48;

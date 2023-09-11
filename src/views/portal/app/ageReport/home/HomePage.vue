@@ -21,8 +21,14 @@ export default defineComponent({
       ],
       page: {
         title: 'Painel analítico de relatórios',
-        subtitle: 'Listagem de relatórios'
+        subtitle: 'Listagem de relatórios',
+        actual: 'Relatórios'
       }
+    }
+  },
+  methods: {
+    tradePage (page) {
+      this.page.actual = page
     }
   }
 })
@@ -30,11 +36,11 @@ export default defineComponent({
 
 <template>
   <div class="home-page">
-    <SubMenuModules :items="subMenu"/>
+    <SubMenuModules :items="subMenu" @page="tradePage" />
     <div class="content-page">
       <h1>{{ page.title }}</h1>
       <span>{{ page.subtitle }}</span>
-      <ReportPage/>
+      <ReportPage v-if="page.actual === 'Relatórios'"/>
 
     </div>
   </div>

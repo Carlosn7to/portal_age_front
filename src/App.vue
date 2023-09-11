@@ -4,10 +4,11 @@ import {mapGetters} from "vuex";
 import LoginPage from "@/views/portal/web/LoginPage.vue";
 import MenuComponent from "@/components/portal/app/menu/MenuComponent.vue";
 import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue";
+import AlertComponent from "@/components/portal/app/_fragments/alert/AlertComponent.vue";
 
 export default defineComponent({
   name: "App",
-  components: {HeaderComponent, MenuComponent, LoginPage},
+  components: {AlertComponent, HeaderComponent, MenuComponent, LoginPage},
   computed: {
     ...mapGetters([
       'system'
@@ -33,6 +34,7 @@ export default defineComponent({
         <router-view></router-view>
       </div>
     </div>
+    <AlertComponent v-if="system.alert.display === true"/>
   </template>
 
 

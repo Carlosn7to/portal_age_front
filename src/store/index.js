@@ -14,7 +14,13 @@ export default createStore({
       mode: 'light',
       loading: false,
       login: false,
-      module: 'Página inicial'
+      module: 'Página inicial',
+      alert: {
+        type: 'attenttion',
+        title: 'Erro!',
+        msg: 'Não foi possível concluir a operação',
+        display: false
+      }
     }
   },
   getters: {
@@ -29,6 +35,16 @@ export default createStore({
         state.system.login = payload.login !== undefined ? payload.login : state.system.login,
         state.system.module = payload.module !== undefined ? payload.module : state.system.module
       ]
+    },
+
+
+    SAVE_ALERT(state, payload) {
+        return [
+            state.system.alert.type = payload.type !== undefined ? payload.type : state.system.alert.type,
+            state.system.alert.title = payload.title !== undefined ? payload.title : state.system.alert.title,
+            state.system.alert.msg = payload.msg !== undefined ? payload.msg : state.system.alert.msg,
+            state.system.alert.display = payload.display !== undefined ? payload.display : state.system.alert.display
+        ]
     },
 
     SAVE_USER(state, payload) {
