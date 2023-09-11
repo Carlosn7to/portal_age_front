@@ -2,33 +2,35 @@
 import {defineComponent} from 'vue'
 import SubMenuModules from "@/components/portal/app/_fragments/subMenuModules/SubMenuModules.vue";
 import ReportPage from "@/components/portal/app/ageReport/ReportPage.vue";
+import UserPage from "@/components/portal/app/ageReport/users/UserPage.vue";
+import ReportManagement from "@/components/portal/app/ageReport/reports/ReportPage.vue";
 
 export default defineComponent({
   name: "HomePage",
-  components: {ReportPage, SubMenuModules},
+  components: {UserPage, ReportPage, SubMenuModules, ReportManagement},
   data () {
     return {
       subMenu: [
         {title: 'Principal',
           subItems: [
-            {title: 'Relatórios'}
+            {id: 1, title: 'Relatórios', subtitle: 'Listagem'}
           ]},
         {title: 'Gerenciamento',
           subItems: [
-            {title: 'Usuários'},
-            {title: 'Relatórios'}
+            {id: 2, title: 'Usuários', subtitle: 'Gerenciamento'},
+            {id: 3, title: 'Relatórios', subtitle: 'Gerenciamento'}
           ]},
       ],
       page: {
-        title: 'Painel analítico de relatórios',
-        subtitle: 'Listagem de relatórios',
-        actual: 'Relatórios'
+        id: 1,
+        title: 'Relatórios',
+        subtitle: 'Listagem'
       }
     }
   },
   methods: {
     tradePage (page) {
-      this.page.actual = page
+      this.page = page
     }
   }
 })
@@ -38,10 +40,11 @@ export default defineComponent({
   <div class="home-page">
     <SubMenuModules :items="subMenu" @page="tradePage" />
     <div class="content-page">
-      <h1>{{ page.title }}</h1>
+      <h1>Painel de {{ page.title }}</h1>
       <span>{{ page.subtitle }}</span>
-      <ReportPage v-if="page.actual === 'Relatórios'"/>
-
+      <ReportPage v-if="page.id === 1"/>
+      <UserPage v-else-if="page.id === 2"/>
+      <ReportManagement v-else-if="page.id === 3"/>
     </div>
   </div>
 </template>
