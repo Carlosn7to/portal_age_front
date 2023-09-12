@@ -7,10 +7,11 @@ import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue"
 import AlertComponent from "@/components/portal/app/_fragments/alert/AlertComponent.vue";
 import MenuComponentMobile from "@/components/portal/mobile/menu/MenuComponentMobile.vue";
 import HeaderComponentMobile from "@/components/portal/mobile/header/HeaderComponentMobile.vue";
+import LoginPageMobile from "@/views/portal/mobile/loginMobile/LoginPageMobile.vue";
 
 export default defineComponent({
   name: "App",
-  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
+  components: {LoginPageMobile, HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
   computed: {
     ...mapGetters([
       'system'
@@ -21,7 +22,8 @@ export default defineComponent({
   },
   data() {
     return {
-      showMenu: false
+      showMenu: false,
+      showSubMenu: false,
     }
   },
 })
@@ -29,20 +31,25 @@ export default defineComponent({
 <template>
 
   <template v-if="system.login === false">
-    <LoginPage/>
+    <template v-if="isMobile">
+    <LoginPageMobile/>
+    </template>
+    <template v-else>
+      <LoginPage/>
+    </template>
   </template>
 
   <template v-if="isMobile">
     <div class="container-mobile">
-      <div class="overlay" v-if="showMenu" @click="showMenu = false"></div>
+      <div class="overlay" v-if="showMenu || this.showSubMenu" @click="showMenu = false; showSubMenu = false"></div>
       <div class="header-mobile">
         <HeaderComponentMobile/>
       </div>
-      <div class="page-mobile" @click="showMenu = false">
+      <div class="page-mobile" @click="showMenu = false; showSubMenu = false">
         <router-view></router-view>
       </div>
       <div class="menu-mobile">
-        <MenuComponentMobile :showMenu="showMenu" @menu="showMenu = true"/>
+        <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" @subMenu="showSubMenu = true" @menu="showMenu = true"/>
       </div>
     </div>
 
@@ -93,6 +100,7 @@ export default defineComponent({
 html {
   font-size: 62.5%;
   overflow: hidden;
+  overflow-y: scroll;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -182,9 +190,19 @@ h2 {
   align-items: center;
 }
 
+.container-mobile {
+ height: 100vh;
+}
+
+.page-mobile {
+  height: 80vh;
+}
 
 .menu-mobile {
-  position: relative;
+  height: 10vh;
+  width: 100%;
+  position: fixed;
   z-index: 5;
+  bottom: 0;
 }
 </style>

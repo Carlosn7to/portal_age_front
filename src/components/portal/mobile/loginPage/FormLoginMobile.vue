@@ -164,12 +164,12 @@ export default defineComponent({
 
   form {
     width: 80%;
-    height: 100%;
+    height: 60%;
     @include flex(column, center, center, 2vh);
     background-color: #fff;
     border: 1px solid #D8D8D8;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
-    border-radius: 7px;
+    border-radius: 2px;
 
     .input-container {
       width: 100%;
@@ -188,6 +188,7 @@ export default defineComponent({
       font-size: 1.2rem;
       font-weight: 500;
       transition: border-image ease-in-out .4s;
+      margin-bottom: 1.5vh;
 
       &:focus {
         border-image: linear-gradient(62deg, rgba(255, 182, 0, 1) 32%, rgba(255, 92, 74, 1) 100%);
@@ -281,7 +282,7 @@ export default defineComponent({
 
 button {
   font-size: 1.6rem;
-  width: 40vw;
+  width: 50vw;
   padding: 12px 10px;
   outline: none;
   border: none;
