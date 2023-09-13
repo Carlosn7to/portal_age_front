@@ -24,6 +24,7 @@ export default defineComponent({
     return {
       showMenu: false,
       showSubMenu: false,
+      showCommission: false,
     }
   },
 })
@@ -45,11 +46,11 @@ export default defineComponent({
       <div class="header-mobile">
         <HeaderComponentMobile/>
       </div>
-      <div class="page-mobile" @click="showMenu = false; showSubMenu = false">
+      <div class="page-mobile" @click="showMenu = false; showSubmenu = false">
         <router-view></router-view>
       </div>
       <div class="menu-mobile">
-        <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" @subMenu="showSubMenu = true" @menu="showMenu = true"/>
+        <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission" @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true" @commission="showCommission = !showCommission"/>
       </div>
     </div>
 

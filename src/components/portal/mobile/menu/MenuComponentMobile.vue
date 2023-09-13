@@ -4,19 +4,22 @@ import {mapGetters, mapMutations} from "vuex";
 
 export default defineComponent({
   name: "MenuComponent",
-  props: ['showMenu', 'showSubMenu'],
+  props: ['showMenu', 'showSubMenu', 'showCommission'],
   data() {
     return {};
   },
   methods: {
     ...mapMutations([
-      'SAVE_SYSTEM'
+      'SAVE_SYSTEM',
     ]),
     tradeMenu() {
       this.$emit('menu')
     },
     tradeSubMenu() {
       this.$emit('subMenu')
+    },
+    tradeCommission() {
+      this.$emit('commission')
     }
   },
   computed: {
@@ -24,7 +27,8 @@ export default defineComponent({
       'system'
     ]),
   }
-})
+
+});
 </script>
 
 <template>
@@ -39,8 +43,7 @@ export default defineComponent({
         </svg>
       </div>
     </router-link>
-    <button class="button-item" @click="tradeMenu(); SAVE_SYSTEM({module: 'Vendas'})"
-            :class="{'routed' : system.module === 'Vendas'}">
+    <button class="button-item" @click="tradeMenu();">
       <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
         <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
         <path
@@ -52,7 +55,6 @@ export default defineComponent({
         <div class="menu-icon"></div>
       </div>
       <div>
-
         <div class="item-icon">
           <div class="item-row" @click="tradeSubMenu">
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
@@ -61,10 +63,14 @@ export default defineComponent({
                   d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/>
             </svg>
             <span>Sua Atividade</span>
-            <div v-if="showSubMenu === true" class="mobile-SubMenu" :class="{'menu-appears' : showSubMenu}">
+          </div>
+          <div class="SubMenu-mobile-container">
+            <div v-if="showSubMenu === true" class="mobile-SubMenu" :class="{'menu-appears-mobile' : showSubMenu}">
+
               <div class="SubMenu-icon-container">
                 <div class="SubMenu-close">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <svg @click="tradeSubMenu()" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                       viewBox="0 0 16 16" fill="none">
                     <path
                         d="M15.5265 2.73247C16.1512 2.10776 16.1512 1.09324 15.5265 0.46853C14.9018 -0.156177 13.8872 -0.156177 13.2625 0.46853L8 5.73606L2.73247 0.473528C2.10776 -0.151179 1.09324 -0.151179 0.46853 0.473528C-0.156177 1.09824 -0.156177 2.11276 0.46853 2.73747L5.73606 8L0.473528 13.2675C-0.151179 13.8922 -0.151179 14.9068 0.473528 15.5315C1.09824 16.1562 2.11276 16.1562 2.73747 15.5315L8 10.2639L13.2675 15.5265C13.8922 16.1512 14.9068 16.1512 15.5315 15.5265C16.1562 14.9018 16.1562 13.8872 15.5315 13.2625L10.2639 8L15.5265 2.73247Z"
                         fill="black" fill-opacity="0.5"/>
@@ -93,12 +99,12 @@ export default defineComponent({
                   </div>
                 </div>
               </div>
-              <div>
-                <div>
+              <div class="SubMenu-container">
+                <div class="SubMenu-sub">
                   <p>Sua Atividade</p>
                 </div>
                 <div class="SubMenu-menu">
-                  <div class="SubMenu-row">
+                  <div class="SubMenu-row" @click="tradeCommission()">
                     <div class="items-title">
                       <div class="item-row-title">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="25" viewBox="0 0 15 25" fill="none">
@@ -175,6 +181,32 @@ export default defineComponent({
                     </div>
                   </div>
                 </div>
+                <div class="commission-page" v-if="showCommission" :class="{'menu-appears-mobile' : showCommission}">
+                  <div class="row-container-commission">
+                    <div class="close-commission" @click="tradeCommission()">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="27" height="17" viewBox="0 0 27 17" fill="none">
+                        <path
+                            d="M0.494409 7.29994C-0.164803 7.96369 -0.164803 9.04162 0.494409 9.70537L7.24474 16.5022C7.90395 17.1659 8.97451 17.1659 9.63372 16.5022C10.2929 15.8384 10.2929 14.7605 9.63372 14.0967L5.76283 10.1992H25.3124C26.2459 10.1992 27 9.43987 27 8.5C27 7.56013 26.2459 6.8008 25.3124 6.8008H5.76283L9.63372 2.90325C10.2929 2.2395 10.2929 1.16156 9.63372 0.497813C8.97451 -0.165938 7.90395 -0.165938 7.24474 0.497813L0.494409 7.29463V7.29994Z"
+                            fill="black"/>
+                      </svg>
+                      <p>Total de comissão</p>
+                    </div>
+                  </div>
+                  <div class="rowTitle-container-commission">
+                    <div class="title-commission">
+                      <p>O seu total de comissão</p>
+                    </div>
+                  </div>
+                  <div class="container-commission">
+                    <div class="number-commission">
+                      <p>R$5.532</p>
+                    </div>
+                    <div class="subTitle-commission">
+                      <p><strong>Comissão total</strong></p>
+                      <p>O total de comissão por dia que você adquiriu no periodo de sete dias.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -182,7 +214,6 @@ export default defineComponent({
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped lang="scss">
@@ -237,6 +268,10 @@ export default defineComponent({
   }
 }
 
+.SubMenu-mobile-container {
+  height: 100vh;
+}
+
 .mobile-menu {
   position: fixed;
   bottom: 0;
@@ -276,7 +311,7 @@ export default defineComponent({
 }
 
 .item-icon {
-  margin-top: 3vh;
+  margin-top: 4vh;
   margin-left: 5vw;
 
   a {
@@ -285,14 +320,14 @@ export default defineComponent({
   }
 
   span {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     font-weight: 500;
     color: #000000;
     margin-left: 1.5vw;
   }
 
   svg {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 }
 
@@ -305,9 +340,23 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 75vh;
+  height: 90vh;
   border-radius: 20px 20px 0px 0px;
   background: linear-gradient(89deg, #E5E5E5 3.84%, #354A7B 527.98%);
+}
+
+.menu-appears-mobile {
+  animation: up-menu-mobile forwards ease-in-out .3s;
+
+}
+
+@keyframes up-menu-mobile {
+  from {
+    transform: translateY(500px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .SubMenu-icon-container {
@@ -350,6 +399,17 @@ export default defineComponent({
   word-wrap: break-word;
 }
 
+.SubMenu-container {
+  margin-top: 5vh;
+}
+
+.SubMenu-sub {
+  margin-left: 8vw;
+  margin-bottom: 1vh;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
 .SubMenu-sub-title {
   color: #5F687A;
   font-size: 1.3rem;
@@ -364,7 +424,6 @@ export default defineComponent({
   flex-direction: column;
   justify-content: flex-start;
   align-content: center;
-  margin-top: 5vh;
   margin-left: 5vw;
   margin-right: 5vw;
   height: 30vh;
@@ -408,4 +467,84 @@ export default defineComponent({
   width: 10%;
   border-radius: 5px;
 }
+
+.commission-page {
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: #ffffff;
+  z-index: 99;
+}
+
+.close-commission {
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  flex-direction: row;
+  margin-top: 5vh;
+  margin-left: 6vw;
+  border-radius: 5px;
+
+  svg {
+    height: 25px;
+  }
+
+  p {
+    font-size: 2rem;
+    margin-left: 6vw;
+    font-weight: 600;
+  }
+}
+
+.rowTitle-container-commission {
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  margin-top: 3vh;
+  margin-left: 6vw;
+}
+
+.title-commission {
+  font-size: 1.9rem;
+  font-weight: 500;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.container-commission {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  margin-top: 3vh;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.number-commission {
+  font-size: 3rem;
+  background: linear-gradient(90deg, #FFB600 4.92%, #F93822 95.45%);
+  background-clip: text;
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subTitle-commission {
+  margin-top: 2vh;
+  font-size: 1.3rem;
+  font-weight: 500;
+  max-width: 80%;
+  word-wrap: break-word;
+  color: #000000;
+
+  p {
+    strong {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+  }
+}
+
 </style>
