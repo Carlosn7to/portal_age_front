@@ -1,12 +1,21 @@
 <script>
+import {mapMutations} from "vuex";
+
 export default {
-  name: "MenuComponentMobile"
+  name: "MenuComponentMobile",
+  methods: {
+    ...mapMutations(['SAVE_SYSTEM', 'SAVE_USER']),
+    logout() {
+      this.SAVE_SYSTEM({login: false})
+      this.SAVE_USER({token: '', firstName: ''})
+    }
+  }
 }
 </script>
 
 <template>
   <div class="container-menu">
-    <div class="container-logo">
+    <div class="container-logo" @click="logout">
       <img src="@/assets/img/identifyBusiness/ageLogoMobile.svg" alt="">
     </div>
     <div class="container-icons">

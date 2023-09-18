@@ -19,6 +19,7 @@ export default {
 .footer-login-page {
   @include flex(column, center, center, .5vh);
   width: 100%;
+  line-height: 1.4;
 
   h1 {
     font-size: 1.6rem;

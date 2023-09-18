@@ -21,7 +21,9 @@ export default defineComponent({
   },
   data() {
     return {
-      showMenu: false
+      showMenu: false,
+      showSubMenu: false,
+      showCommission: false,
     }
   },
 })
@@ -32,38 +34,41 @@ export default defineComponent({
     <LoginPage/>
   </template>
 
-  <template v-if="isMobile">
-    <div class="container-mobile">
-      <div class="overlay" v-if="showMenu" @click="showMenu = false"></div>
-      <div class="header-mobile">
-        <HeaderComponentMobile/>
-      </div>
-      <div class="page-mobile" @click="showMenu = false">
-        <router-view></router-view>
-      </div>
-      <div class="menu-mobile">
-        <MenuComponentMobile :showMenu="showMenu" @menu="showMenu = true"/>
-      </div>
-    </div>
-
-    <AlertComponent v-if="system.alert.display === true"/>
-  </template>
-
   <template v-else>
-    <div class="container">
-      <div class="menu">
-        <MenuComponent/>
-      </div>
-      <div class="header">
-        <HeaderComponent/>
-      </div>
-      <div class="page">
-        <router-view></router-view>
-      </div>
-    </div>
-    <AlertComponent v-if="system.alert.display === true"/>
-  </template>
 
+    <template v-if="isMobile">
+      <div class="container-mobile">
+        <div class="overlay" v-if="showMenu || this.showSubMenu" @click="showMenu = false; showSubMenu = false"></div>
+        <div class="header-mobile">
+          <HeaderComponentMobile/>
+        </div>
+        <div class="page-mobile" @click="showMenu = false; showSubmenu = false">
+          <router-view></router-view>
+        </div>
+        <div class="menu-mobile">
+          <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission" @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true" @commission="showCommission = !showCommission"/>
+        </div>
+      </div>
+
+      <AlertComponent v-if="system.alert.display === true"/>
+    </template>
+
+    <template v-else>
+      <div class="container">
+        <div class="menu">
+          <MenuComponent/>
+        </div>
+        <div class="header">
+          <HeaderComponent/>
+        </div>
+        <div class="page">
+          <router-view></router-view>
+        </div>
+      </div>
+      <AlertComponent v-if="system.alert.display === true"/>
+    </template>
+
+  </template>
 
 </template>
 
@@ -93,6 +98,7 @@ export default defineComponent({
 html {
   font-size: 62.5%;
   overflow: hidden;
+  overflow-y: scroll;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -182,9 +188,19 @@ h2 {
   align-items: center;
 }
 
+.container-mobile {
+ height: 100vh;
+}
+
+.page-mobile {
+  height: 80vh;
+}
 
 .menu-mobile {
-  position: relative;
+  height: 10vh;
+  width: 100%;
+  position: fixed;
   z-index: 5;
+  bottom: 0;
 }
 </style>
