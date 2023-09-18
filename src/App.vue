@@ -7,11 +7,10 @@ import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue"
 import AlertComponent from "@/components/portal/app/_fragments/alert/AlertComponent.vue";
 import MenuComponentMobile from "@/components/portal/mobile/menu/MenuComponentMobile.vue";
 import HeaderComponentMobile from "@/components/portal/mobile/header/HeaderComponentMobile.vue";
-import LoginPageMobile from "@/views/portal/mobile/loginMobile/LoginPageMobile.vue";
 
 export default defineComponent({
   name: "App",
-  components: {LoginPageMobile, HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
+  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
   computed: {
     ...mapGetters([
       'system'
@@ -32,10 +31,7 @@ export default defineComponent({
 <template>
 
   <template v-if="system.login === false">
-    <template v-if="isMobile">
-    <LoginPageMobile/>
-    </template>
-    <template v-else>
+    <template>
       <LoginPage/>
     </template>
   </template>
