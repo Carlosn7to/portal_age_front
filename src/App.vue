@@ -31,43 +31,44 @@ export default defineComponent({
 <template>
 
   <template v-if="system.login === false">
-    <template>
-      <LoginPage/>
-    </template>
-  </template>
-
-  <template v-if="isMobile">
-    <div class="container-mobile">
-      <div class="overlay" v-if="showMenu || this.showSubMenu" @click="showMenu = false; showSubMenu = false"></div>
-      <div class="header-mobile">
-        <HeaderComponentMobile/>
-      </div>
-      <div class="page-mobile" @click="showMenu = false; showSubmenu = false">
-        <router-view></router-view>
-      </div>
-      <div class="menu-mobile">
-        <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission" @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true" @commission="showCommission = !showCommission"/>
-      </div>
-    </div>
-
-    <AlertComponent v-if="system.alert.display === true"/>
+    <LoginPage/>
   </template>
 
   <template v-else>
-    <div class="container">
-      <div class="menu">
-        <MenuComponent/>
-      </div>
-      <div class="header">
-        <HeaderComponent/>
-      </div>
-      <div class="page">
-        <router-view></router-view>
-      </div>
-    </div>
-    <AlertComponent v-if="system.alert.display === true"/>
-  </template>
 
+    <template v-if="isMobile">
+      <div class="container-mobile">
+        <div class="overlay" v-if="showMenu || this.showSubMenu" @click="showMenu = false; showSubMenu = false"></div>
+        <div class="header-mobile">
+          <HeaderComponentMobile/>
+        </div>
+        <div class="page-mobile" @click="showMenu = false; showSubmenu = false">
+          <router-view></router-view>
+        </div>
+        <div class="menu-mobile">
+          <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission" @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true" @commission="showCommission = !showCommission"/>
+        </div>
+      </div>
+
+      <AlertComponent v-if="system.alert.display === true"/>
+    </template>
+
+    <template v-else>
+      <div class="container">
+        <div class="menu">
+          <MenuComponent/>
+        </div>
+        <div class="header">
+          <HeaderComponent/>
+        </div>
+        <div class="page">
+          <router-view></router-view>
+        </div>
+      </div>
+      <AlertComponent v-if="system.alert.display === true"/>
+    </template>
+
+  </template>
 
 </template>
 

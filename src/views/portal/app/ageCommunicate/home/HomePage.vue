@@ -45,11 +45,26 @@ export default defineComponent({
   @include flex(row, flex-start, initial, .1vw);
 
   .content-page {
+    background-image: url("@/assets/img/identifyBusiness/logoBackgroundComunicate.png");
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: right;
     width: 100%;
     height: 100%;
     @include flex(row, center, center, .1vw);
+    animation: fadeIn 1s ease-in-out forwards;
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    }
   }
-}
 
 
 </style>
