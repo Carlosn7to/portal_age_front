@@ -17,14 +17,13 @@ export default defineComponent({
         {title: 'Ferramentas',
           subItems: [
             {title: 'Anti-Fraude'},
-            {title: 'Agenda Técnica'},
-            {title: 'Capacidade Técnica'},
+            {title: 'Agenda Técnica'}
           ]},
-        {title: 'Gerenciamento',
-          subItems: [
-            {title: 'Permissões de acesso'},
-            {title: 'Logs'}
-          ]},
+        // {title: 'Gerenciamento',
+        //   subItems: [
+        //     {title: 'Permissões de acesso'},
+        //     {title: 'Logs'}
+        //   ]},
       ],
       page: 'Tela inicial'
     }

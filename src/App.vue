@@ -10,7 +10,8 @@ import HeaderComponentMobile from "@/components/portal/mobile/header/HeaderCompo
 
 export default defineComponent({
   name: "App",
-  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
+  components: {
+    HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
   computed: {
     ...mapGetters([
       'system'
