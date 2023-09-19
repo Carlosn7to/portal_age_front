@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import {mapGetters} from "vuex";
+import {mapGetters, mapState, mapMutations} from "vuex";
 import LoginPage from "@/views/portal/web/LoginPage.vue";
 import MenuComponent from "@/components/portal/app/menu/MenuComponent.vue";
 import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue";
@@ -12,12 +12,16 @@ export default defineComponent({
   name: "App",
   components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
   computed: {
+    ...mapState(['showOverlay']),
     ...mapGetters([
       'system'
     ]),
+    showOverlay() {
+      return this.$store.state.showOverlay;
+    },
     isMobile() {
       return window.innerWidth <= 768;
-    }
+    },
   },
   data() {
     return {
@@ -26,6 +30,9 @@ export default defineComponent({
       showCommission: false,
     }
   },
+  methods: {
+    ...mapMutations(['toggleOverlay']),
+  }
 })
 </script>
 <template>
@@ -46,10 +53,11 @@ export default defineComponent({
           <router-view></router-view>
         </div>
         <div class="menu-mobile">
-          <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission" @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true" @commission="showCommission = !showCommission"/>
+          <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission"
+                               @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true"
+                               @commission="showCommission = !showCommission"/>
         </div>
       </div>
-
       <AlertComponent v-if="system.alert.display === true"/>
     </template>
 
@@ -65,7 +73,10 @@ export default defineComponent({
           <router-view></router-view>
         </div>
       </div>
+      <div v-if="showOverlay" class="overlay" @click="toggleOverlay"></div>
       <AlertComponent v-if="system.alert.display === true"/>
+
+      <portal-target name="end-of-body" slim></portal-target>
     </template>
 
   </template>
@@ -78,7 +89,7 @@ export default defineComponent({
 
 *,
 ::before,
-::after{
+::after {
   padding: 0;
   margin: 0;
   font-family: 'Roboto';
@@ -124,7 +135,7 @@ h2 {
 
 .mode-dark {
 
-  h1,h2,h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6 {
     color: #fff;
   }
 
@@ -141,10 +152,12 @@ h2 {
 ::-webkit-scrollbar-track {
   background-color: #F4F4F4;
 }
+
 ::-webkit-scrollbar {
   width: 4px;
   background: #F4F4F4;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #dad7d7;
 }
@@ -182,14 +195,14 @@ h2 {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo escura com opacidade */
-  z-index: 2; /* Coloque-o acima dos outros componentes, mas abaixo do menu */
+  z-index: 3; /* Coloque-o acima dos outros componentes, mas abaixo do menu */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .container-mobile {
- height: 100vh;
+  height: 100vh;
 }
 
 .page-mobile {

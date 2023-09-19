@@ -1,9 +1,12 @@
 <script>
 import {AXIOS} from "../../../../../../../services/api.ts";
 import Cookie from 'js-cookie';
+import {mapMutations} from "vuex";
+import FilterComponent from "@/components/portal/app/_fragments/filter/FilterComponent.vue";
 
 export default {
   name: "ScheduleTechnical",
+  components: {FilterComponent},
   data() {
     return {
       bar: {
@@ -31,6 +34,7 @@ export default {
         typeNote: null,
         dateSchedule: null
       },
+      showOverlay: false
     }
   },
   methods: {
@@ -56,7 +60,7 @@ export default {
           weeks.push(week);
           week = [];
         }
-        week.push({ date: day });
+        week.push({date: day});
       }
 
       // Adiciona dias em branco no final do calendário
@@ -69,7 +73,7 @@ export default {
       this.weeks = weeks;
 
       // Salva o dia atual
-      this.selectDay({ date: new Date().getDate() })
+      this.selectDay({date: new Date().getDate()})
     },
     isCurrentDay(day) {
       const currentDate = new Date();
@@ -107,7 +111,7 @@ export default {
     },
     selectDay(day) {
 
-      if(! this.pendingConsult) {
+      if (!this.pendingConsult) {
         this.daySelected = day.date
       }
 
@@ -122,7 +126,7 @@ export default {
           dateSchedule: this.payload.dateSchedule
         },
         headers: {
-          'Authorization': 'Bearer '+Cookie.get('token')
+          'Authorization': 'Bearer ' + Cookie.get('token')
         }
       }).then((res) => {
 
@@ -131,7 +135,8 @@ export default {
       })
 
 
-    }
+    },
+    ...mapMutations(['toggleOverlay']),
   },
   mounted() {
     // Obtém a data atual
@@ -161,7 +166,8 @@ export default {
                   <h4>{{ item.title }}</h4>
                   <span>{{ item.valueTotal }}</span>
                 </div>
-                <progress :style="{animationDelay : index * .2+'s'}" id="activations" :max="item.valueTotal" :value="item.value"></progress>
+                <progress :style="{animationDelay : index * .2+'s'}" id="activations" :max="item.valueTotal"
+                          :value="item.value"></progress>
               </div>
             </div>
           </div>
@@ -173,7 +179,8 @@ export default {
                   <h4>{{ item.title }}</h4>
                   <span>{{ item.valueTotal }}</span>
                 </div>
-                <progress :style="{animationDelay : index * .2+'s'}" :max="item.valueTotal" :value="item.value"></progress>
+                <progress :style="{animationDelay : index * .2+'s'}" :max="item.valueTotal"
+                          :value="item.value"></progress>
               </div>
             </div>
           </div>
@@ -184,9 +191,21 @@ export default {
             <table>
               <caption>
                 <div class="items">
-                  <button @click="prevMonth"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32C28.7 32 0 60.7 0 96L0 416zM128 256c0-6.7 2.8-13 7.7-17.6l112-104c7-6.5 17.2-8.2 25.9-4.4s14.4 12.5 14.4 22l0 208c0 9.5-5.7 18.2-14.4 22s-18.9 2.1-25.9-4.4l-112-104c-4.9-4.5-7.7-10.9-7.7-17.6z"/></svg></button>
+                  <button @click="prevMonth">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                      <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                      <path
+                          d="M0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32C28.7 32 0 60.7 0 96L0 416zM128 256c0-6.7 2.8-13 7.7-17.6l112-104c7-6.5 17.2-8.2 25.9-4.4s14.4 12.5 14.4 22l0 208c0 9.5-5.7 18.2-14.4 22s-18.9 2.1-25.9-4.4l-112-104c-4.9-4.5-7.7-10.9-7.7-17.6z"/>
+                    </svg>
+                  </button>
                   <span>{{ monthNames[currentMonth] }} {{ currentYear }}</span>
-                  <button @click="nextMonth"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 96c0-35.3-28.7-64-64-64L64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320zM320 256c0 6.7-2.8 13-7.7 17.6l-112 104c-7 6.5-17.2 8.2-25.9 4.4s-14.4-12.5-14.4-22l0-208c0-9.5 5.7-18.2 14.4-22s18.9-2.1 25.9 4.4l112 104c4.9 4.5 7.7 10.9 7.7 17.6z"/></svg></button>
+                  <button @click="nextMonth">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                      <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                      <path
+                          d="M448 96c0-35.3-28.7-64-64-64L64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320zM320 256c0 6.7-2.8 13-7.7 17.6l-112 104c-7 6.5-17.2 8.2-25.9 4.4s-14.4-12.5-14.4-22l0-208c0-9.5 5.7-18.2 14.4-22s18.9-2.1 25.9 4.4l112 104c4.9 4.5 7.7 10.9 7.7 17.6z"/>
+                    </svg>
+                  </button>
                 </div>
               </caption>
               <thead>
@@ -222,19 +241,44 @@ export default {
           <h1>Agenda técnica - <b>{{ daySelected }} de {{ monthNames[currentMonth] }} de {{ currentYear }}</b></h1>
 
           <div class="actions">
-            <div class="filter">
-              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
-              <span>Filtro</span>
+            <FilterComponent>
+              <template #filter-content>
+                <!-- Coloque suas opções de filtro customizadas aqui -->
+                <div class="filter-title">
+                  <h1>Filtrar tipos de solicitação</h1>
+                  <p>Selecione por qual filtro você deseja realizar a sua consulta</p>
+                </div>
+                <div class="filter-input">
+                  <input placeholder="Filtrar tipo de solicitação...">
+                  <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 22 22" fill="none">
+                      <path
+                          d="M17.8759 8.93619C17.8759 10.9082 17.2356 12.7298 16.157 14.2077L21.5971 19.651C22.1343 20.1881 22.1343 21.0602 21.5971 21.5972C21.06 22.1343 20.1877 22.1343 19.6506 21.5972L14.2105 16.1539C12.7323 17.2365 10.9103 17.8724 8.93794 17.8724C4.00059 17.8724 0 13.8726 0 8.93619C0 3.9998 4.00059 0 8.93794 0C13.8753 0 17.8759 3.9998 17.8759 8.93619ZM8.93794 15.1228C9.75053 15.1228 10.5552 14.9628 11.3059 14.6519C12.0566 14.341 12.7388 13.8853 13.3134 13.3108C13.888 12.7363 14.3438 12.0543 14.6547 11.3037C14.9657 10.5531 15.1257 9.74863 15.1257 8.93619C15.1257 8.12376 14.9657 7.31928 14.6547 6.56868C14.3438 5.81809 13.888 5.13609 13.3134 4.56161C12.7388 3.98713 12.0566 3.53143 11.3059 3.22052C10.5552 2.90962 9.75053 2.7496 8.93794 2.7496C8.12534 2.7496 7.32071 2.90962 6.56997 3.22052C5.81923 3.53143 5.13709 3.98713 4.5625 4.56161C3.98791 5.13609 3.53212 5.81809 3.22115 6.56868C2.91019 7.31928 2.75013 8.12376 2.75013 8.93619C2.75013 9.74863 2.91019 10.5531 3.22115 11.3037C3.53212 12.0543 3.98791 12.7363 4.5625 13.3108C5.13709 13.8853 5.81923 14.341 6.56997 14.6519C7.32071 14.9628 8.12534 15.1228 8.93794 15.1228Z"
+                          fill="white"/>
+                    </svg>
+                  </button>
+                </div>
+                <div>
 
-            </div>
+                </div>
+              </template>
+            </FilterComponent>
             <div class="search">
-              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+              </svg>
               <input autocomplete="off" type="text" name="search" id="search" placeholder="Pesquisar cliente">
             </div>
             <div class="download">
               <button>
                 <span>Exportar agenda</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path
+                      d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                </svg>
               </button>
             </div>
           </div>
@@ -243,24 +287,24 @@ export default {
         <div class="data">
           <table>
             <thead>
-              <tr>
-                <th>Nº do contrato</th>
-                <th>Cliente</th>
-                <th>Protocolo</th>
-                <th>Tipo de solicitação</th>
-                <th>Turno</th>
-                <th>Região</th>
-              </tr>
+            <tr>
+              <th>Nº do contrato</th>
+              <th>Cliente</th>
+              <th>Protocolo</th>
+              <th>Tipo de solicitação</th>
+              <th>Turno</th>
+              <th>Região</th>
+            </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>12912</td>
-                <td>Carlos Neto</td>
-                <td>21099021</td>
-                <td>Ativação</td>
-                <td>Manhã</td>
-                <td>Sobradinho</td>
-              </tr>
+            <tr>
+              <td>12912</td>
+              <td>Carlos Neto</td>
+              <td>21099021</td>
+              <td>Ativação</td>
+              <td>Manhã</td>
+              <td>Sobradinho</td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -295,6 +339,7 @@ export default {
       @include flex(row, space-between, center, 1vw);
       width: 100%;
       height: 25%;
+
       .available-schedules {
         @include flex(row, flex-start, center, 1vw);
         width: 70%;
@@ -312,7 +357,9 @@ export default {
             color: #000000;
             font-weight: 500;
           }
+
           @include flex(column, flex-start, initial, 1vh);
+
           .container-progress {
             width: 100%;
             @include flex(column, flex-start, initial, 1vh);
@@ -485,13 +532,16 @@ export default {
 
         .actions {
           @include flex(row, space-evenly, center, 1vw);
-            width: 50%;
+          width: 50%;
+
           .filter {
             @include flex(row, flex-start, center, .5vw);
+
             svg {
               fill: rgba(0, 0, 0, 0.15);
               font-size: 2rem;
             }
+
             span {
               color: rgba(0, 0, 0, 0.30);
               font-size: 1.4rem;
@@ -547,6 +597,7 @@ export default {
 
       .data {
         padding: 2vh 0;
+
         table {
           width: 100%;
           border-collapse: collapse;
@@ -589,6 +640,50 @@ export default {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.filter-title {
+  margin-left: 2vw;
+  margin-right: 2vw;
+  padding-bottom: 2vh;
+
+  h1 {
+    font-size: 2.4rem;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1.6rem;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 400;
+  }
+}
+
+.filter-input {
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2vh 0;
+  background-color: #D9D9D950;
+
+  input {
+    height: 35px;
+    width: 75%;
+    border: .5px solid #d9d9d9 ;
+    padding-left: 15px;
+  }
+
+  button {
+    width: 10%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #FFB600 -0.88%, #F93822 235.67%);
+    border: none;
+    cursor: pointer;
   }
 }
 

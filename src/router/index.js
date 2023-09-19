@@ -124,6 +124,25 @@ const routes = [
     },
   },
   {
+    path: '/comunica/novo',
+    name: 'CommunicateNew',
+    component: () => import('@/views/portal/app/ageCommunicate/newComunicate/createComunicate.vue'),
+    beforeEnter: (to, from, next) => {
+      guard.auth(to, from, next);
+
+      // const isMobile = window.innerWidth <= 768;
+
+      // if (isMobile) {
+      //   import('@/views/portal/mobile/ageComunicate/home/HomePageMobile.vue').then((module) => {
+      //     to.matched[0].components.default = module.default;
+      //     next();
+      //   });
+      // } else {
+      //   next();
+      // }
+    },
+  },
+  {
     path: '/ajuda/inicio',
     name: 'HelpHomePage',
     component: () => import('@/views/portal/app/ageHelp/home/HomePage.vue'),

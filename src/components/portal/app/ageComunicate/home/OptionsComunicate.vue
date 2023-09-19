@@ -17,7 +17,7 @@ export default {
     <h2>Por favor, selecione a operação desejada</h2>
     <div class="optionComunicate">
       <div>
-        <router-link to="">
+        <router-link to="/comunica/novo">
           <img class="option" src="@/assets/img/ageComunicate/newComunicate.svg" alt="">
         </router-link>
         <h1> Comunicação nova</h1>
