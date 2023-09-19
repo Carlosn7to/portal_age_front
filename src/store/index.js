@@ -21,7 +21,8 @@ export default createStore({
         msg: 'Não foi possível concluir a operação',
         display: false
       }
-    }
+    },
+    showOverlay: false
   },
   getters: {
     user: state => state.user,
@@ -53,6 +54,10 @@ export default createStore({
         state.user.lastName = payload.lastName !== undefined ? payload.lastName : state.user.lastName,
         state.user.token = payload.token !== undefined ? payload.token : state.user.token,
       ]
+    },
+
+    toggleOverlay(state) {
+      state.showOverlay = !state.showOverlay
     }
   },
   actions: {
