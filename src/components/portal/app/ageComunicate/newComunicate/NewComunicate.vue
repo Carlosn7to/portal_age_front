@@ -1,18 +1,20 @@
 <script>
+import AsideProgressBar from "@/components/portal/app/ageComunicate/newComunicate/AsideProgressBar.vue";
+import FormNewComunicate from "@/components/portal/app/ageComunicate/newComunicate/FormNewComunicate.vue";
+
 export default {
-  name: "NewComunicate"
+  name: "NewComunicate",
+  components: {FormNewComunicate, AsideProgressBar}
 }
 </script>
 
 <template>
   <div class="create-comunicate">
-    <div class="">
-      <h1>sei lá</h1>
+    <div class="principal-comunicate">
+      <FormNewComunicate/>
     </div>
     <div class="aside-comunicate">
-      <div class="progress-container">
-        <div class="circle-progress"></div>
-      </div>
+      <AsideProgressBar/>
     </div>
   </div>
 </template>
@@ -24,7 +26,6 @@ export default {
   height: 100%;
   background-color: #f1f1f1;
   @include flex(row, space-between, center, .1vw);
-  animation: fadeIn 1s ease-in-out forwards;
 
   @keyframes fadeIn {
     0% {
@@ -33,6 +34,28 @@ export default {
     100% {
       opacity: 1;
     }
+  }
+}
+
+.principal-comunicate {
+  width: 62vw;
+  height: 90vh;
+  background-color: #F1F1F1;
+  @include flex(column, flex-end, center, 0vw);
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #000000;
   }
 }
 
@@ -57,38 +80,6 @@ export default {
     font-weight: 500;
     color: #000000;
   }
-}
-
-.progress-container {
-  padding-left: 40px;
-  width: 100%;
-  height: 10vh;
-  background-color: #ffffff;
-  @include flex(row, flex-start, center, .1vw);
-  animation: fadeIn 1s ease-in-out forwards;
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  h1 {
-    font-size: 1.6rem;
-    font-weight: 500;
-    color: #000000;
-  }
-}
-
-.circle-progress {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #000000;
-
 }
 
 </style>
