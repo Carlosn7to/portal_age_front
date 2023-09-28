@@ -2,6 +2,7 @@
 import {defineComponent} from 'vue'
 import {mapGetters, mapState, mapMutations} from "vuex";
 import LoginPage from "@/views/portal/web/LoginPage.vue";
+import LoginPageMobile from "@/views/portal/mobile/loginMobile/LoginPageMobile.vue";
 import MenuComponent from "@/components/portal/app/menu/MenuComponent.vue";
 import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue";
 import AlertComponent from "@/components/portal/app/_fragments/alert/AlertComponent.vue";
@@ -10,7 +11,7 @@ import HeaderComponentMobile from "@/components/portal/mobile/header/HeaderCompo
 
 export default defineComponent({
   name: "App",
-  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage},
+  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage, LoginPageMobile},
   computed: {
     ...mapState(['showOverlay']),
     ...mapGetters([
@@ -38,7 +39,12 @@ export default defineComponent({
 <template>
 
   <template v-if="system.login === false">
-    <LoginPage/>
+    <template v-if="isMobile">
+       <LoginPageMobile/>
+    </template>
+    <template v-else>
+      <LoginPage/>
+    </template>
   </template>
 
   <template v-else>
