@@ -29,7 +29,7 @@ export default defineComponent({
   <div class="container-main">
     <div class="title-subtitle">
       <div class="title">
-        <h1><b>Bem-vindo(a)</b>, {{ user.firstName }}</h1>
+        <h1><b>Bem-vindo(a)</b>, <span>{{ user.firstName }}</span></h1>
       </div>
       <div class="subtitle">
         <span>Uma nova cara para o sistema que <b>você já conhece!</b></span>
@@ -93,9 +93,18 @@ export default defineComponent({
 
     .title {
       h1 {
-        color: rgba(0, 0, 0, 1);
+        color: rgba(0, 0, 0, .8);
         font-size: 2.8rem;
         letter-spacing: 1px;
+
+        span {
+          background: linear-gradient(90deg, #FFB600 -2.66%, #FC461B 112.9%);
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-weight: 600;
+          font-size: 3rem;
+        }
       }
     }
 
