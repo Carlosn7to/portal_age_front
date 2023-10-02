@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkportal_age_front"]=self["webpackChunkportal_age_front"]||[]).push([[95],{8095:function(e,n,r){r.r(n),r.d(n,{default:function(){return f}});var t=r(3396);function a(e,n,r,a,o,u){return(0,t.wg)(),(0,t.iD)("div",null," mobile ")}var o={name:"HomePageMobile"},u=r(89);const l=(0,u.Z)(o,[["render",a]]);var f=l}}]);
+//# sourceMappingURL=95.fdcabd61.js.map
