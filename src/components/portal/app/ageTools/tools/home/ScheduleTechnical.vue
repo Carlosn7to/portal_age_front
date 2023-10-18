@@ -1,6 +1,6 @@
 <script>
-import {AXIOS} from "../../../../../../../services/api.ts";
-import Cookie from 'js-cookie';
+// import {AXIOS} from "../../../../../../../services/api.ts";
+// import Cookie from 'js-cookie';
 import {mapMutations} from "vuex";
 import FilterComponent from "@/components/portal/app/_fragments/filter/FilterComponent.vue";
 
@@ -9,23 +9,28 @@ export default {
   components: {FilterComponent},
   data() {
     return {
-      bar: {
-        morning: [
-          {title: 'Instalações', valueTotal: 100, value: 10},
-          {title: 'Visitas Técnicas', valueTotal: 100, value: 70},
-          {title: 'MP/ME', valueTotal: 100, value: 100},
-        ],
-        afternoon: [
-          {title: 'Instalações', valueTotal: 100, value: 20},
-          {title: 'Visitas Técnicas', valueTotal: 30, value: 70},
-          {title: 'MP/ME', valueTotal: 50, value: 40},
-        ]
-      },
       monthNames: [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
       ],
       daysOfWeek: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+      capacityInfo: {
+        dayName: '',
+        turn: [
+          {title: 'Manhã',
+            capacity: [
+              {title: 'Instalações', valueTotal: 0, value: 0},
+              {title: 'Visitas Técnicas', valueTotal: 0, value: 0},
+              {title: 'MP/ME', valueTotal: 0, value: 0},
+            ]},
+          {title: 'Tarde',
+            capacity: [
+              {title: 'Instalações', valueTotal: 0, value: 0},
+              {title: 'Visitas Técnicas', valueTotal: 0, value: 0},
+              {title: 'MP/ME', valueTotal: 0, value: 0},
+            ]},
+        ]
+      },
       currentYear: null,
       currentMonth: null,
       weeks: [],
@@ -115,28 +120,95 @@ export default {
         this.daySelected = day.date
       }
 
+      this.capacityBuild()
+
     },
-    getData: function () {
+    getData () {
 
+      // alert(this.payload.dateSchedule)
 
-      AXIOS({
-        method: 'GET',
-        url: 'agetools/tools/schedule/dashboard/data',
-        params: {
-          dateSchedule: this.payload.dateSchedule
-        },
-        headers: {
-          'Authorization': 'Bearer ' + Cookie.get('token')
-        }
-      }).then((res) => {
-
-        console.log(res)
-
-      })
+      // AXIOS({
+      //   method: 'GET',
+      //   url: 'agetools/tools/schedule/dashboard/data',
+      //   params: {
+      //     dateSchedule: this.payload.dateSchedule
+      //   },
+      //   headers: {
+      //     'Authorization': 'Bearer ' + Cookie.get('token')
+      //   }
+      // }).then((res) => {
+      //
+      //   console.log(res)
+      //
+      // })
 
 
     },
     ...mapMutations(['toggleOverlay']),
+    capacityBuild () {
+      const dayName = this.daysOfWeek[new Date(this.currentYear, this.currentMonth, this.daySelected).getDay()]
+
+      switch (dayName) {
+        case 'Dom':
+          this.capacityInfo.dayName = 'Domingo'
+          break
+        case 'Seg':
+          this.capacityInfo.dayName = 'Segunda-feira'
+          this.capacityInfo.turn[0].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[1].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[0].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[1].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[0].capacity[2].valueTotal = 15
+          this.capacityInfo.turn[1].capacity[2].valueTotal = 15
+          break
+        case 'Ter':
+          this.capacityInfo.dayName = 'Terça-feira'
+          this.capacityInfo.turn[0].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[1].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[0].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[1].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[0].capacity[2].valueTotal = 15
+          this.capacityInfo.turn[1].capacity[2].valueTotal = 15
+          break
+        case 'Qua':
+          this.capacityInfo.dayName = 'Quarta-feira'
+          this.capacityInfo.turn[0].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[1].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[0].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[1].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[0].capacity[2].valueTotal = 15
+          this.capacityInfo.turn[1].capacity[2].valueTotal = 15
+          break
+        case 'Qui':
+          this.capacityInfo.dayName = 'Quinta-feira'
+          this.capacityInfo.turn[0].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[1].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[0].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[1].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[0].capacity[2].valueTotal = 15
+          this.capacityInfo.turn[1].capacity[2].valueTotal = 15
+          break
+        case 'Sex':
+          this.capacityInfo.dayName = 'Sexta-feira'
+          this.capacityInfo.turn[0].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[1].capacity[0].valueTotal = 150
+          this.capacityInfo.turn[0].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[1].capacity[1].valueTotal = 75
+          this.capacityInfo.turn[0].capacity[2].valueTotal = 15
+          this.capacityInfo.turn[1].capacity[2].valueTotal = 15
+          break
+        case 'Sab':
+          this.capacityInfo.dayName = 'Sábado'
+          this.capacityInfo.turn[0].capacity[0].valueTotal = 100
+          this.capacityInfo.turn[1].capacity[0].valueTotal = 100
+          this.capacityInfo.turn[0].capacity[1].valueTotal = 37
+          this.capacityInfo.turn[1].capacity[1].valueTotal = 37
+          this.capacityInfo.turn[0].capacity[2].valueTotal = 10
+          this.capacityInfo.turn[1].capacity[2].valueTotal = 10
+          break
+      }
+
+    }
   },
   mounted() {
     // Obtém a data atual
@@ -154,33 +226,20 @@ export default {
   <div class="container-schedule-technical">
 
     <div class="content-schedule">
-      <h1>Painel - Agenda técnica - {{ this.daySelected }}</h1>
+      <h1>Painel - Agenda técnica</h1>
 
       <div class="headers">
         <div class="available-schedules">
-          <div class="period">
-            <span>Disponibilidade Período - <b>Manhã</b></span>
+          <div class="period" v-for="(turn, index)  in capacityInfo.turn" :key="index">
+            <span>Disponibilidade Período - <b>{{ turn.title }}</b></span>
             <div class="container-progress">
-              <div class="progress" v-for="(item, index) in bar.morning" :key="index">
+              <div class="progress" v-for="(cap, ind) in turn.capacity" :key="ind">
                 <div class="title-value">
-                  <h4>{{ item.title }}</h4>
-                  <span>{{ item.valueTotal }}</span>
+                  <h4>{{ cap.title }}</h4>
+                  <span>{{ cap.valueTotal }}</span>
                 </div>
-                <progress :style="{animationDelay : index * .2+'s'}" id="activations" :max="item.valueTotal"
-                          :value="item.value"></progress>
-              </div>
-            </div>
-          </div>
-          <div class="period">
-            <span>Disponibilidade Período - <b>Tarde</b></span>
-            <div class="container-progress">
-              <div class="progress" v-for="(item, index) in bar.afternoon" :key="index">
-                <div class="title-value">
-                  <h4>{{ item.title }}</h4>
-                  <span>{{ item.valueTotal }}</span>
-                </div>
-                <progress :style="{animationDelay : index * .2+'s'}" :max="item.valueTotal"
-                          :value="item.value"></progress>
+                <progress :style="{animationDelay : ind * .2+'s'}" id="activations" :max="cap.valueTotal"
+                          :value="cap.value"></progress>
               </div>
             </div>
           </div>
@@ -218,7 +277,7 @@ export default {
               <!-- Corpo da tabela com as semanas e dias do calendário -->
               <tr v-for="(week, index) in weeks" :key="index">
                 <td v-for="day in week" :key="day.date"
-                    @click="selectDay(day)">
+                    @click="selectDay(day);getData()">
                   <template v-if="day.date === daySelected">
                     <div class="day">
                       {{ day.date }}
@@ -238,7 +297,7 @@ export default {
       </div>
       <div class="data-container">
         <div class="headers-data">
-          <h1>Agenda técnica - <b>{{ daySelected }} de {{ monthNames[currentMonth] }} de {{ currentYear }}</b></h1>
+          <h1>Agenda técnica - <b>{{ capacityInfo.dayName }}</b>, <b>{{ daySelected }} de {{ monthNames[currentMonth] }} de {{ currentYear }}</b></h1>
 
           <div class="actions">
             <FilterComponent>
