@@ -1,18 +1,13 @@
 <script>
-import DashboardsComponent from "@/components/portal/app/ageRV/b2c/sales/DashboardsComponent.vue";
-
 export default {
-  name: "SalesComponent",
-  components: {DashboardsComponent}
+  name: "AllSales"
 }
 </script>
 
 <template>
-  <div class="data">
-    <div class="container-dashboards">
-      <DashboardsComponent/>
-    </div>
-  </div>
+<div>
+
+</div>
 </template>
 
 <style scoped lang="scss">

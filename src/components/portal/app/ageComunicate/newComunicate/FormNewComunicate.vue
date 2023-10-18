@@ -3,7 +3,7 @@ export default {
   name: "FormNewComunicate",
   data() {
     return {
-      currentPage: 1,
+      currentPage: 0,
       totalPage: 2,
       formData: {},
       optionsTypeMessage: [
@@ -90,6 +90,24 @@ export default {
       lockDay: '',
     };
   },
+  computed: {
+    canGoBack() {
+      return this.currentPage > 0;
+    },
+    canGoForward() {
+      return true;
+    },
+  },
+  methods: {
+    nextPage() {
+      this.currentPage++;
+    },
+    previousPage() {
+      if (this.canGoBack) {
+        this.currentPage--;
+      }
+    },
+  },
 }
 </script>
 
@@ -103,7 +121,7 @@ export default {
       <h1>Parâmetro</h1>
       <input type="text">
     </div>
-    <div class="page" v-if="currentPage === 1">
+    <div class="page" v-if="currentPage === 0">
       <div class="container-select">
         <h1>Tipo de Mensagem</h1>
         <select name="typeMessage" id="typeMessage" v-model="typeMessage" required>
@@ -146,7 +164,7 @@ export default {
       </div>
     </div>
 
-    <div v-else-if="currentPage === 2">
+    <div v-else-if="currentPage === 1">
       <div class="container-select">
         <h1>Periodicidade</h1>
         <select name="frequency" id="frequency" v-model="frequency">
@@ -156,8 +174,6 @@ export default {
             }}
           </option>
         </select>
-        <!--      <input type="text">-->
-        <!--      <input type="text">-->
       </div>
       <div class="container-select">
         <h1>Repetir o Agendamento</h1>
@@ -187,6 +203,11 @@ export default {
           </select>
         </div>
       </div>
+    </div>
+    <div class="div_pagination">
+      <button @click="previousPage" :disabled="!canGoBack">Anterior</button>
+      <span>Página {{ currentPage + 1 }}</span>
+      <button @click="nextPage" :disabled="!canGoForward">Próximo</button>
     </div>
   </div>
 
@@ -292,6 +313,23 @@ export default {
       background-color: #F5F7FB;
     }
 
+  }
+}
+
+.div_pagination {
+  width: 100%;
+  height: 10%;
+  @include flex(row, center, flex-end, .1vw);
+
+  button {
+    width: 10%;
+    height: 50%;
+    border: 1px solid #DEE0E4;
+    border-radius: 5px;
+    padding-left: 1vw;
+    font-size: 1.4rem;
+    color: #AFAFAF;
+    background-color: #F5F7FB;
   }
 }
 </style>
