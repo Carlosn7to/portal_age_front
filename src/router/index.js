@@ -70,6 +70,14 @@ const routes = [
     ]
   },
   {
+    path: '/rv/b2c/remuneracao',
+    name: 'RemunerationPage',
+    component: () => import('@/views/portal/app/ageRV/adm/sales/MainPage.vue'),
+    beforeEnter: [
+      guard.auth,
+    ]
+  },
+  {
     path: '/dashboards/inicio',
     name: 'DashboardHomePage',
     component: () => import('@/views/portal/app/ageDashboard/home/HomePage.vue'),
