@@ -159,6 +159,14 @@ const routes = [
     ]
   },
   {
+    path: '/atendimento/inicio',
+    name: 'AttHomePage',
+    component: () => import('@/views/portal/app/ageAttendant/HomePage.vue'),
+    beforeEnter: [
+      guard.auth,
+    ]
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/inicio' // Redireciona para a rota principal (Home) quando a rota não existe
   }
