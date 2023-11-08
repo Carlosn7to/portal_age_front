@@ -3,10 +3,11 @@ import {defineComponent} from 'vue'
 import SubMenuModules from "@/components/portal/app/_fragments/subMenuModules/SubMenuModules.vue";
 import AntiFraud from "@/components/portal/app/ageTools/tools/home/AntiFraud.vue";
 import ScheduleTechnical from "@/components/portal/app/ageTools/tools/home/ScheduleTechnical.vue";
+import AgeAttendant from "@/components/portal/app/ageTools/tools/home/AgeAttendant.vue"
 
 export default defineComponent({
   name: "HomePage",
-  components: {ScheduleTechnical, AntiFraud, SubMenuModules},
+  components: {ScheduleTechnical, AntiFraud, SubMenuModules, AgeAttendant},
   data () {
     return {
       subMenu: [
@@ -17,7 +18,8 @@ export default defineComponent({
         {title: 'Ferramentas',
           subItems: [
             {title: 'Anti-Fraude'},
-            {title: 'Agenda Técnica'}
+            {title: 'Agenda Técnica'},
+            {title: 'Atendimento'},
           ]},
         // {title: 'Gerenciamento',
         //   subItems: [
@@ -46,6 +48,7 @@ export default defineComponent({
     <div class="page-tools">
       <AntiFraud v-if="page.title === 'Anti-Fraude'"/>
       <ScheduleTechnical v-if="page.title === 'Agenda Técnica'"/>
+      <AgeAttendant v-if="page.title === 'Atendimento'"/>
     </div>
   </div>
 </template>
