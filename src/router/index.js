@@ -78,6 +78,14 @@ const routes = [
     ]
   },
   {
+    path: '/rv/retencao/supervisor',
+    name: 'SupervisorVision',
+    component: () => import('@/components/portal/app/ageRV/retention/supervisor/SupervisorVision.vue'),
+    beforeEnter: [
+      guard.auth,
+    ]
+  },
+  {
     path: '/dashboards/inicio',
     name: 'DashboardHomePage',
     component: () => import('@/views/portal/app/ageDashboard/home/HomePage.vue'),

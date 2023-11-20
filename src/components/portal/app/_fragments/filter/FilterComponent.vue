@@ -5,6 +5,18 @@ import {Portal} from "portal-vue";
 export default {
   name: "FilterComponent",
   components: {Portal},
+  props: {
+    columns: {
+      type: Array,
+      required: true,
+    }
+  },
+  data() {
+    return {
+      selectedFilters: [],
+      filterValue: '',
+    }
+  },
   computed: {
     ...mapState(['showOverlay']),
     showOverlay() {
@@ -13,6 +25,9 @@ export default {
   },
   methods: {
     ...mapMutations(['toggleOverlay']),
+    applyFilter() {
+      this.$emit('filterApplied', { selectedFilters: this.selectedFilters, filterValue: this.filterValue });
+    }
   }
 }
 </script>

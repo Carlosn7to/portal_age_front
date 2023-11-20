@@ -2,7 +2,23 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "AntiFraud"
+  name: "AntiFraud",
+  data() {
+    return {
+      fields: {
+        name: '',
+        email: '',
+        number: null,
+        cep: '',
+        address: '',
+        neighborhood: '',
+        document: '',
+        tel: '',
+        cel: '',
+       },
+  }
+  }
+    
 })
 </script>
 
@@ -12,23 +28,22 @@ export default defineComponent({
 
     <div class="content-antifraud">
       <div class="filters">
-
+      <div v-for="(value, key) in fields" :key="key" class="input-container">
+        <input class="input" v-model="fields[key]" :name="key" :id="key" :placeholder="key">
       </div>
-      <div class="data">
-
       </div>
+      <div class="data"></div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-
 .antifraud-container {
   height: 100%;
   .title {
     font-weight: 500;
     font-size: 1.4rem;
-    color: rgba(0, 0, 0, .8);
+    color: rgba(0, 0, 0, 0.8);
   }
 
   .content-antifraud {
@@ -37,19 +52,27 @@ export default defineComponent({
     padding: 1vh 0;
     @include flex(row, flex-start, initial, 1vw);
 
-
     .filters {
       width: 15%;
       height: 100%;
-      background-color: red;
     }
 
     .data {
       width: 85%;
       height: 100%;
-      background-color: blue;
+    }
+
+    .input-container {
+      padding: 2vh 0 2vh 0;
+
+      .input {
+        padding: 1vh;
+        border: 1px solid #DEE0E4;
+        background-color: #F5F7FB;
+        color: #AFAFAF;
+        border-radius: 5px
+      }
     }
   }
 }
-
 </style>
