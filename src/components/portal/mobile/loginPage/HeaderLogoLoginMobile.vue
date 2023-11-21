@@ -14,7 +14,7 @@ export default {
 .header-logo-login {
   display: flex;
   justify-content: center;
-  align-content: start;
+  align-content: flex-start;
   height: 10vh;
   width: 100vw;
   background-color: #F5F7FB;

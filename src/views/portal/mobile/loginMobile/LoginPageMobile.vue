@@ -31,7 +31,7 @@ export default defineComponent({
 
 .login-page-container {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   flex-direction: column;
   height: 100vh;
   width: 100vw;

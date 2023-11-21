@@ -1,36 +1,48 @@
-<script setup>
-import { ref, defineProps } from "vue";
-
-defineProps({
-  options: {
-    type: Array,
-    required: true
+<script>
+export default {
+  props: {
+    date: {
+      type: Array,
+      required: true
+    },
+    modelValue: {
+      default: null
+    }
+  },
+  data() {
+    return {
+      selectedOption: null,
+      showOptions: false
+    };
+  },
+  computed: {
+    mappedSelectedOption() {
+      return this.selectedOption?.name || this.selectedOption || 'Selecione';
+    }
+  },
+  methods: {
+    toggleOptionsSelect(option) {
+      this.selectedOption = option;
+      this.showOptions = false;
+      this.$emit('filterDate', option.value);
+    },
+    toggleDropdown() {
+      this.showOptions = !this.showOptions;
+    }
   }
-});
-
-const selectedOption = ref(null);
-const showOptions = ref(false);
-
-const toggleOptionsSelect = option => {
-  selectedOption.value = option;
-  showOptions.value = false;
-};
-
-const toggleDropdown = () => {
-  showOptions.value = !showOptions.value;
 };
 </script>
 
 <template>
   <div class="dropdown-wrapper" @click="toggleDropdown">
-    <div class="dropdown-selected-option">{{ selectedOption || 'Selecione' }}</div>
+    <div class="dropdown-selected-option">{{ mappedSelectedOption }}</div>
     <div class="options-wrapper" v-if="showOptions">
       <div
         class="option"
-        v-for="(option, index) in options"
+        v-for="(date, index) in date"
         :key="index"
-        @click="toggleOptionsSelect(option)"
-      >{{ option }}</div>
+        @click="toggleOptionsSelect(date)"
+      >{{ date.month  }} / {{ date.year }}</div>
     </div>
   </div>
 </template>
