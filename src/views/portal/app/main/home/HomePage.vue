@@ -84,7 +84,7 @@ export default defineComponent({
 
 .container-main {
   @include flex(column, flex-start, initial, 5vh);
-  height: 100vh;
+  height: 80vh;
   padding: 4vh 5vw;
   position: relative;
 

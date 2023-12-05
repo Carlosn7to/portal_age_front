@@ -13,7 +13,7 @@
     "@variantjs/vue": "^0.0.22",
     "axios": "^1.4.0",
     "body-scroll-lock": "^4.0.0-beta.0",
-    "chart.js": "^4.3.3",
+    "chart.js": "^4.4.0",
     "core-js": "^3.8.3",
     "js-cookie": "^3.0.5",
     "portal-vue": "^3.0.0",

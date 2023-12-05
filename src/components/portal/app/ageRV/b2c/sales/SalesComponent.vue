@@ -1,16 +1,20 @@
 <script>
-import DashboardsComponent from "@/components/portal/app/ageRV/b2c/sales/DashboardsComponent.vue";
+import GraphsComponent from "@/components/portal/app/ageRV/b2c/sales/GraphsComponent.vue";
+import LastSales from "@/components/portal/app/ageRV/b2c/sales/LastSales.vue";
 
 export default {
   name: "SalesComponent",
-  components: {DashboardsComponent}
+  components: { GraphsComponent, LastSales}
 }
 </script>
 
 <template>
   <div class="data">
-    <div class="container-dashboards">
-      <DashboardsComponent/>
+    <div class="container-graphs">
+      <GraphsComponent/>
+    </div>
+    <div class="container-last-sales">
+      <LastSales/>
     </div>
   </div>
 </template>
@@ -22,9 +26,9 @@ export default {
   height: 85%;
   display: grid;
   grid-template-columns: 70% 30%;
-  grid-template-rows: 40% 60%;
-  grid-template-areas: 'D S'
-                          'G S';
+  grid-template-rows: 80% 20%;
+  grid-template-areas: 'G S'
+                          'D S';
   gap: 1vw;
 
   .container-dashboards {
@@ -44,9 +48,9 @@ export default {
   .container-sales {
     .data {
       grid-template-columns: 70% 30%;
-      grid-template-rows: 12% 88%;
-      grid-template-areas: 'D S'
-                          'G S';
+      grid-template-rows: 50% 50%;
+      grid-template-areas: 'G S'
+                          'D S';
     }
   }
 }

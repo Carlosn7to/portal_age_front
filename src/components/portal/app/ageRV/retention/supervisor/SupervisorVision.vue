@@ -80,7 +80,7 @@ export default {
 
 
       AXIOS({
-        url: 'saoijisao',
+        url: '',
         method: 'get',
         params: {
           date: year+"-"+month+"-01"
