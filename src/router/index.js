@@ -1,181 +1,152 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '@/views/portal/app/main/home/HomePage.vue'
-import guard from '/services/middleware/Auth.js'
+import store from '@/store/index.js'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AuthLayout from '@/layouts/AuthLayout.vue'
 
 const routes = [
-
   {
-    path: '/inicio',
-    name: 'HomePage',
-    component: HomePage,
-    beforeEnter: (to, from, next) => {
-      guard.auth(to, from, next);
-
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        import('@/views/portal/mobile/main/HomePageMobile.vue').then((module) => {
-          to.matched[0].components.default = module.default;
-          next();
-        });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    path: '/rv/inicio',
-    name: 'RVHomePage',
-    component: () => import('@/views/portal/app/ageRV/home/HomePage.vue'),
-    beforeEnter: (to, from, next) => {
-      guard.auth(to, from, next);
-
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        import('@/views/portal/mobile/AgeRV/home/HomePageMobile.vue').then((module) => {
-          to.matched[0].components.default = module.default;
-          next();
-        });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    path: '/rv/b2c/inicio',
-    name: 'PresentationModule',
-    component: () => import('@/views/portal/app/ageRV/home/PrensetationModule.vue'),
-    beforeEnter: (to, from, next) => {
-      guard.auth(to, from, next);
-
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        import('@/views/portal/mobile/AgeRV/home/PresentationModule.vue').then((module) => {
-          to.matched[0].components.default = module.default;
-          next();
-        });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    path: '/rv/b2c/vendas',
-    name: 'MainPage',
-    component: () => import('@/views/portal/app/ageRV/b2c/sales/MainPage.vue'),
-    beforeEnter: [
-      guard.auth,
+    path: '/',
+    component: DefaultLayout,
+    children: [
+      {
+        path: 'inicio',
+        name: 'HomePage',
+        component: () => import('@/views/portal/app/main/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/inicio',
+        name: 'RVHomePage',
+        component: () => import('@/views/portal/app/ageRV/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/b2c/inicio',
+        name: 'PresentationModule',
+        component: () => import('@/views/portal/app/ageRV/home/PrensetationModule.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/b2c/vendas',
+        name: 'MainPage',
+        component: () => import('@/views/portal/app/ageRV/b2c/sales/MainPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/b2c/remuneracao',
+        name: 'RemunerationPage',
+        component: () => import('@/views/portal/app/ageRV/adm/sales/MainPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/retencao/supervisor',
+        name: 'SupervisorVision',
+        component: () => import('@/components/portal/app/ageRV/retention/supervisor/SupervisorVision.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'dashboards/inicio',
+        name: 'DashboardHomePage',
+        component: () => import('@/views/portal/app/ageDashboard/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'relatorios/inicio',
+        name: 'ReportHomePage',
+        component: () => import('@/views/portal/app/ageReport/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'ferramentas/inicio',
+        name: 'ToolsHomePage',
+        component: () => import('@/views/portal/app/ageTools/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'comunica/inicio',
+        name: 'CommunicateHomePage',
+        component: () => import('@/views/portal/app/ageCommunicate/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'comunica/novo',
+        name: 'CommunicateNew',
+        component: () => import('@/views/portal/app/ageCommunicate/newComunicate/createComunicate.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'ajuda/inicio',
+        name: 'HelpHomePage',
+        component: () => import('@/views/portal/app/ageHelp/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/inicio',
+        name: 'RVHomePage',
+        component: () => import('@/views/portal/app/ageRV/home/HomePage.vue'),
+        meta: { requiresAuth: true },
+      },
     ]
   },
   {
-    path: '/rv/b2c/remuneracao',
-    name: 'RemunerationPage',
-    component: () => import('@/views/portal/app/ageRV/adm/sales/MainPage.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
-  },
-  {
-    path: '/rv/retencao/supervisor',
-    name: 'SupervisorVision',
-    component: () => import('@/components/portal/app/ageRV/retention/supervisor/SupervisorVision.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
-  },
-  {
-    path: '/dashboards/inicio',
-    name: 'DashboardHomePage',
-    component: () => import('@/views/portal/app/ageDashboard/home/HomePage.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
-  },
-  {
-    path: '/relatorios/inicio',
-    name: 'ReportHomePage',
-    component: () => import('@/views/portal/app/ageReport/home/HomePage.vue'),
-    beforeEnter: (to, from, next) => {
-      guard.auth(to, from, next);
-
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        import('@/views/portal/mobile/ageReport/home/HomePage.vue').then((module) => {
-          to.matched[0].components.default = module.default;
-          next();
-        });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    path: '/ferramentas/inicio',
-    name: 'ToolsHomePage',
-    component: () => import('@/views/portal/app/ageTools/home/HomePage.vue'),
-    beforeEnter: [
-      guard.auth,
-    ]
-  },
-  {
-    path: '/comunica/inicio',
-    name: 'CommunicateHomePage',
-    component: () => import('@/views/portal/app/ageCommunicate/home/HomePage.vue'),
-    beforeEnter: (to, from, next) => {
-      guard.auth(to, from, next);
-
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        import('@/views/portal/mobile/ageComunicate/home/HomePageMobile.vue').then((module) => {
-          to.matched[0].components.default = module.default;
-          next();
-        });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    path: '/comunica/novo',
-    name: 'CommunicateNew',
-    component: () => import('@/views/portal/app/ageCommunicate/newComunicate/createComunicate.vue'),
-    beforeEnter: (to, from, next) => {
-      guard.auth(to, from, next);
-
-      // const isMobile = window.innerWidth <= 768;
-
-      // if (isMobile) {
-      //   import('@/views/portal/mobile/ageComunicate/home/HomePageMobile.vue').then((module) => {
-      //     to.matched[0].components.default = module.default;
-      //     next();
-      //   });
-      // } else {
-      //   next();
-      // }
-    },
-  },
-  {
-    path: '/ajuda/inicio',
-    name: 'HelpHomePage',
-    component: () => import('@/views/portal/app/ageHelp/home/HomePage.vue'),
-    beforeEnter: [
-      guard.auth,
+    path: '/login',
+    component: AuthLayout,
+    children: [
+      {
+        path: '',
+        name: 'Login',
+        component: () => import('@/views/portal/web/LoginPage.vue'),
+        meta: { requiresAuth: false },
+      },
     ]
   },
   {
     path: '/:catchAll(.*)',
-    redirect: '/inicio' // Redireciona para a rota principal (Home) quando a rota não existe
-  }
-]
+    redirect: '/inicio'
+  },
+  {
+    path: '/dashboards',
+    redirect: '/dashboards/inicio'
+  },
+  {
+    path: '/rv',
+    redirect: '/rv/inicio'
+  },
+  {
+    path: '/rv/b2c',
+    redirect: '/rv/b2c/inicio'
+  },
+  {
+    path: '/relatorios',
+    redirect: '/relatorios/inicio'
+  },
+  {
+    path: '/ferramentas',
+    redirect: '/ferramentas/inicio'
+  },
+  {
+    path: '/comunica',
+    redirect: '/comunica/inicio'
+  },
+  {
+    path: '/ajuda',
+    redirect: '/ajuda/inicio'
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !store.getters.isAuthenticated) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
+});
 
 export default router

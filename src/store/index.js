@@ -26,7 +26,8 @@ export default createStore({
   },
   getters: {
     user: state => state.user,
-    system: state => state.system
+    system: state => state.system,
+    isAuthenticated: state => !!state.user.token
   },
   mutations: {
     SAVE_SYSTEM(state, payload) {

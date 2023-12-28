@@ -30,7 +30,8 @@ export default defineComponent({
 }
 
 .header-login-page {
-  height: 30%;
+  height: 25%;
+  margin-bottom: 3vh;
   @include flex(column, flex-end, center, 2vh);
 
   h1 {

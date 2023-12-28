@@ -39,7 +39,7 @@ export default defineComponent({
   background-repeat: no-repeat;
 
   .card-login-page {
-    width: 23vw;
+    width: 25vw;
   }
 
   //img {

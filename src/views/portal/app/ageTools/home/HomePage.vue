@@ -53,7 +53,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 .tools-module {
   width: 100%;
@@ -62,7 +62,7 @@ export default defineComponent({
 
   .page-tools {
     width: 85%;
-    padding: 2vh 2vw;
+    padding: 1vh 1vw;
     height: 100%;
   }
 }

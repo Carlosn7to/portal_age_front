@@ -157,6 +157,7 @@ export default defineComponent({
   width: 100%;
   padding: 4vh 0 6vh 0;
   background-color: #fff;
+  border: 1px solid #E1E1E1;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
   border-radius: 7px;
   z-index: 3;

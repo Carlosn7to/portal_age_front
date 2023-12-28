@@ -123,11 +123,10 @@ export default defineComponent({
   border-right: 1px solid #00000020;
 
   .logo {
-    padding: 3vh 0;
-    min-height: 8vh;
+    padding: 2vh 0;
 
     img {
-      width: 3vw;
+      width: 2.6vw;
       height: auto;
       display: block;
       margin: 0 auto;
@@ -164,7 +163,7 @@ export default defineComponent({
       transition: background-color ease-in-out 0.4s;
 
       svg {
-        fill: #1a1c1e;
+        fill: #373737;
         width: 1.2vw;
         height: auto;
         cursor: pointer;

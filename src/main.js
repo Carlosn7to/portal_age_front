@@ -4,6 +4,13 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import PortalVue from 'portal-vue'
+import { maska } from 'maska';
 
-createApp(App).use(store).use(PortalVue).use(router).mount('#app');
+const app = createApp(App);
 
+app.use(store);
+app.use(PortalVue);
+app.use(router);
+app.directive('maska', maska); 
+
+app.mount('#app');

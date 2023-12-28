@@ -1,96 +1,15 @@
 <script>
-import {defineComponent} from 'vue'
-import {mapGetters, mapState, mapMutations} from "vuex";
-import LoginPage from "@/views/portal/web/LoginPage.vue";
-import LoginPageMobile from "@/views/portal/mobile/loginMobile/LoginPageMobile.vue";
-import MenuComponent from "@/components/portal/app/menu/MenuComponent.vue";
-import HeaderComponent from "@/components/portal/app/header/HeaderComponent.vue";
-import AlertComponent from "@/components/portal/app/_fragments/alert/AlertComponent.vue";
-import MenuComponentMobile from "@/components/portal/mobile/menu/MenuComponentMobile.vue";
-import HeaderComponentMobile from "@/components/portal/mobile/header/HeaderComponentMobile.vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: "App",
-  components: {HeaderComponentMobile, MenuComponentMobile, AlertComponent, HeaderComponent, MenuComponent, LoginPage, LoginPageMobile},
-  computed: {
-    ...mapState(['showOverlay']),
-    ...mapGetters([
-      'system'
-    ]),
-    showOverlay() {
-      return this.$store.state.showOverlay;
-    },
-    isMobile() {
-      return window.innerWidth <= 768;
-    },
-  },
-  data() {
-    return {
-      showMenu: false,
-      showSubMenu: false,
-      showCommission: false,
-    }
-  },
-  methods: {
-    ...mapMutations(['toggleOverlay']),
-  }
 })
 </script>
 <template>
-
-  <template v-if="system.login === false">
-    <template v-if="isMobile">
-       <LoginPageMobile/>
-    </template>
-    <template v-else>
-      <LoginPage/>
-    </template>
-  </template>
-
-  <template v-else>
-
-    <template v-if="isMobile">
-      <div class="container-mobile">
-        <div class="overlay" v-if="showMenu || this.showSubMenu" @click="showMenu = false; showSubMenu = false"></div>
-        <div class="header-mobile">
-          <HeaderComponentMobile/>
-        </div>
-        <div class="page-mobile" @click="showMenu = false; showSubmenu = false">
-          <router-view></router-view>
-        </div>
-        <div class="menu-mobile">
-          <MenuComponentMobile :showMenu="showMenu" :showSubMenu="showSubMenu" :showCommission="showCommission"
-                               @subMenu="showSubMenu = !showSubMenu" @menu="showMenu = true"
-                               @commission="showCommission = !showCommission"/>
-        </div>
-      </div>
-      <AlertComponent v-if="system.alert.display === true"/>
-    </template>
-
-    <template v-else>
-      <div class="container">
-        <div class="menu">
-          <MenuComponent/>
-        </div>
-        <div class="header">
-          <HeaderComponent/>
-        </div>
-        <div class="page">
-          <router-view></router-view>
-        </div>
-      </div>
-      <div v-if="showOverlay" class="overlay" @click="toggleOverlay"></div>
-      <AlertComponent v-if="system.alert.display === true"/>
-
-      <portal-target name="end-of-body" slim></portal-target>
-    </template>
-
-  </template>
-
+    <router-view></router-view>
 </template>
 
 <style lang="scss">
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500&display=swap');
 
 *,
@@ -118,7 +37,12 @@ html {
   overflow-y: scroll;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400;
   font-style: normal;
   font-variant: normal;
@@ -141,7 +65,12 @@ h2 {
 
 .mode-dark {
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: #fff;
   }
 
@@ -168,58 +97,4 @@ h2 {
   background: #dad7d7;
 }
 
-
-.container {
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 5% 95%;
-  grid-template-rows: 10% 90%;
-  grid-template-areas: 'M H'
-                        'M P';
-
-  .menu {
-    grid-area: M;
-    z-index: 3;
-  }
-
-  .header {
-    grid-area: H;
-    z-index: 3;
-  }
-
-  .page {
-    grid-area: P;
-    z-index: 1;
-  }
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo escura com opacidade */
-  z-index: 3; /* Coloque-o acima dos outros componentes, mas abaixo do menu */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.container-mobile {
-  height: 100vh;
-}
-
-.page-mobile {
-  height: 80vh;
-}
-
-.menu-mobile {
-  height: 10vh;
-  width: 100%;
-  position: fixed;
-  z-index: 5;
-  bottom: 0;
-}
 </style>
