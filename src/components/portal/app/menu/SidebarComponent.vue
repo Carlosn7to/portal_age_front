@@ -154,7 +154,7 @@ export default {
     </div>
 </template>
   
-<style lang="scss">
+<style scoped lang="scss">
 .sidebar {
     display: flex;
     flex-direction: column;

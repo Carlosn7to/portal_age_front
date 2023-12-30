@@ -41,7 +41,13 @@ const routes = [
       {
         path: 'rv/retencao/supervisor',
         name: 'SupervisorVision',
-        component: () => import('@/components/portal/app/ageRV/retention/supervisor/SupervisorVision.vue'),
+        component: () => import('@/views/portal/app/ageRV/retention/supervisor/SupervisorPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'rv/cobranca',
+        name: 'AttendantPage',
+        component: () => import('@/views/portal/app/ageRV/charge/attendant/attendantPage.vue'),
         meta: { requiresAuth: true },
       },
       {
