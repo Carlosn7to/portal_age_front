@@ -1,6 +1,88 @@
 <script>
+import {AXIOS} from "../../../../../services/api.ts";
+import Cookie from "js-cookie";
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
-  name: "ReportPage"
+  name: "ReportPage",
+  data () {
+    return {
+      reports: [],
+      report: [],
+      search: '',
+      selectedOptionsReport: [],
+      typeDateReport: 'day',
+      preview: false
+    }
+  },
+  methods: {
+    ...mapMutations(['SAVE_ALERT']),
+    getReports () {
+        AXIOS({
+          method: 'GET',
+          url: 'agereport/report/reports',
+          headers: {
+            "Authorization": "Bearer "+Cookie.get('token')
+          }
+        }).then(res => {
+          this.reports = res.data
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    downloadExcel () {
+
+      const reportId = this.report.id
+
+      this.reports.map((item) => {
+        if (item.id === reportId) {
+          item.status = true
+        }
+      })
+
+      this.SAVE_ALERT({display: true, type: 'info', title: 'Extraindo relatório', msg: 'Avisaremos quando estiver pronto.'})
+
+      AXIOS({
+        method: 'GET',
+        url: `agereport/report-download/${this.report.id}`,
+        headers: {
+          'Authorization': 'Bearer '+Cookie.get('token')
+        },
+        params: {paramnsId: this.selectedOptionsReport},
+        responseType: 'blob',
+      }).then((res) => {
+
+        this.reports.map((item) => {
+          if (item.id === reportId) {
+            item.status = false
+          }
+        })
+
+        let blob = new Blob([res.data],
+            { type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = this.report.nome_arquivo
+        link.click()
+
+      })
+    },
+    checkAllCheckboxes () {
+      this.selectedOptionsReport = this.report.parametros.map(item => item.id);
+
+    }
+  },
+  computed: {
+    ...mapGetters(['system']),
+    reportFiltered () {
+      return this.reports.filter(item => {
+        return item.nome.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
+  },
+  mounted() {
+    this.getReports()
+  }
 }
 </script>
 
@@ -15,7 +97,7 @@ export default {
             <path d="M17.8759 8.93619C17.8759 10.9082 17.2356 12.7298 16.157 14.2077L21.5971 19.651C22.1343 20.1881 22.1343 21.0602 21.5971 21.5972C21.06 22.1343 20.1877 22.1343 19.6506 21.5972L14.2105 16.1539C12.7323 17.2365 10.9103 17.8724 8.93794 17.8724C4.00059 17.8724 0 13.8726 0 8.93619C0 3.9998 4.00059 0 8.93794 0C13.8753 0 17.8759 3.9998 17.8759 8.93619ZM8.93794 15.1228C9.75053 15.1228 10.5552 14.9628 11.3059 14.6519C12.0566 14.341 12.7388 13.8853 13.3134 13.3108C13.888 12.7363 14.3438 12.0543 14.6547 11.3037C14.9657 10.5531 15.1257 9.74863 15.1257 8.93619C15.1257 8.12376 14.9657 7.31928 14.6547 6.56868C14.3438 5.81809 13.888 5.13609 13.3134 4.56161C12.7388 3.98713 12.0566 3.53143 11.3059 3.22052C10.5552 2.90962 9.75053 2.7496 8.93794 2.7496C8.12534 2.7496 7.32071 2.90962 6.56997 3.22052C5.81923 3.53143 5.13709 3.98713 4.5625 4.56161C3.98791 5.13609 3.53212 5.81809 3.22115 6.56868C2.91019 7.31928 2.75013 8.12376 2.75013 8.93619C2.75013 9.74863 2.91019 10.5531 3.22115 11.3037C3.53212 12.0543 3.98791 12.7363 4.5625 13.3108C5.13709 13.8853 5.81923 14.341 6.56997 14.6519C7.32071 14.9628 8.12534 15.1228 8.93794 15.1228Z" fill="black" fill-opacity="0.15"/>
           </svg>
           <input type="text" id="search" name="search" autocomplete="off"
-                 placeholder="Pesquisar relatório...">
+                 placeholder="Pesquisar relatório..." v-model="search">
         </div>
       </div>
       <div class="data-reports">
@@ -34,72 +116,24 @@ export default {
           </div>
         </div>
         <div class="body-reports">
-          <div style="animation-delay: .1s" class="report">
+          <div
+              :style="{animationDelay : index * .1+'s'}" class="report" v-for="(item, index) in reportFiltered" :key="index">
             <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
+              <h4>{{ item.nome }}</h4>
             </div>
             <div class="item">
-              <h4>Teste</h4>
+              <h4>-</h4>
             </div>
             <div class="item">
-              <h4>Teste</h4>
+              <h4>-</h4>
             </div>
             <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
+              <button v-if="! item.status"  @click="report = item; checkAllCheckboxes(); preview = true">
+                <span>Visualizar Relatório</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
               </button>
-            </div>
-          </div>
-          <div style="animation-delay: .2s" class="report">
-            <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div style="animation-delay: .3s" class="report">
-            <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-              </button>
-            </div>
-          </div>
-          <div style="animation-delay: .4s" class="report">
-            <div class="item" style="width: 35%; justify-content: left">
-              <h4>Relatório de teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item">
-              <h4>Teste</h4>
-            </div>
-            <div class="item" style="width: 30%">
-              <button>
-                <span>Exportar Relatório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+              <button v-else>
+                <span>Extraindo Relatório</span>
               </button>
             </div>
           </div>
@@ -115,26 +149,57 @@ export default {
         Customize seu relatório com o que você deseja visualizar.
       </p>
 
-        <div class="checkbox-data">
-          <h4>Colunas</h4>
-          <label class='checkbox blue'>
-            <input checked type='checkbox'>
-            <span class='indicator'></span>
-            Blue checkbox
-          </label>
-          <div class="checkbox">
-            <input type="checkbox" id="col2" name="col2" value="col2">
-            <label for="col2">Coluna 2</label>
+        <template v-if="preview">
+          <div class="checkbox-data">
+            <h4>Colunas</h4>
+            <div class="checkbox-container" v-for="(item, index) in report.parametros" :key="index">
+              <label class='checkbox blue'>
+                <input checked type='checkbox' :value="item.id" :id="item.id" v-model="selectedOptionsReport">
+                <span class='indicator'></span>
+              </label>
+              <span>{{ item.name }}</span>
+            </div>
           </div>
-          <div class="checkbox">
-            <input type="checkbox" id="col3" name="col3" value="col3">
-            <label for="col3">Coluna 3</label>
+
+
+          <div class="date-options">
+            <template v-if="report.isPeriodo != 0 || report.isPeriodoHora != 0">
+              <p>
+                Selecione a periocidade que deseja receber o relatório.
+              </p>
+              <br>
+              <select name="period" id="period" v-model="typeDateReport">
+                <option value="day" selected>
+                  Dia
+                </option>
+                <option value="period">
+                  Período
+                </option>
+              </select>
+              <div class="date">
+                <template v-if="typeDateReport === 'day'">
+                  <input type="date" name="day" id="day">
+                </template>
+                <template v-else>
+                  <div class="period">
+                    <input type="date" name="firstPeriod" id="firstPeriod">
+                    <label for="firstPeriod">Data inicio</label>
+                  </div>
+
+                  <div class="period">
+                    <input type="date" name="lastPeriod" id="lastPeriod">
+                    <label for="lastPeriod">Data Fim</label>
+                  </div>
+                </template>
+              </div>
+            </template>
+            <br>
+            <button @click="downloadExcel">
+              Baixar relatório
+            </button>
           </div>
-          <div class="checkbox">
-            <input type="checkbox" id="col4" name="col4" value="col4">
-            <label for="col4">Coluna 4</label>
-          </div>
-        </div>
+        </template>
+
       </div>
     </div>
   </div>
@@ -183,6 +248,7 @@ export default {
     }
 
     .data-reports {
+      height: 85%;
       .header-reports {
         width: 100%;
         @include flex(row, space-between, center, 0);
@@ -206,6 +272,8 @@ export default {
       }
 
       .body-reports {
+        overflow-y: auto;
+        max-height: 85%;
         .report {
           width: 100%;
           @include flex(row, space-between, center, 0);
@@ -222,7 +290,7 @@ export default {
               font-size: 1.2rem;
               color: #000;
               font-weight: 500;
-              text-align: center;
+              text-align: left;
 
             }
 
@@ -231,10 +299,12 @@ export default {
             button {
               margin: 0 auto;
               border-radius: 5px;
-              background: #19233B;
-              color: #efefef;
-              border: none;
+              background: rgb(255,182,0);
+              background: linear-gradient(62deg, rgba(255,182,0,1) 32%, rgba(255,92,74,1) 100%);
+              color: #fff;
               padding: 7px 15px;
+              border: none;
+              box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
               cursor: pointer;
               transition: background-color .2s ease-in-out, color ease-in-out .2s;
               @include flex(row, center, center, .8vw);
@@ -271,6 +341,8 @@ export default {
   .preview {
     width: 30%;
     height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
     border-radius: 7px;
     border: 1.5px solid rgba(95, 104, 122, 0.30);
 
@@ -282,7 +354,10 @@ export default {
 
 
     .content {
+      height: 80%;
+
       padding: 2vh 1vw;
+      @include flex(column, flex-start, initial, 3vh);
       p {
         font-size: 1.4rem;
         padding: 0 1vw;
@@ -292,21 +367,97 @@ export default {
       }
 
       .checkbox-data {
-        margin-top: 2vh;
+        @include flex(row, flex-start, center, .5vw);
+        flex-wrap: wrap;
+        width: 100%;
+
         h4 {
           font-size: 1.2rem;
           color: #00000050;
           font-weight: 600;
           text-align: left;
           margin-bottom: 2vh;
+          width: 100%;
         }
 
-        .checkbox {
-          padding: .5vh 1.5vw;
+        .checkbox-container {
+          padding: .2vh .5vw;
           @include flex(row, flex-start, center, .5vw);
+          width: 48%;
+
+
+          span {
+            font-size: 1.2rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
 
         }
 
+
+      }
+
+
+      .date-options {
+        select {
+          width: 100%;
+          padding: 10px 8px;
+          border-radius: 5px;
+          outline: none;
+          border: 1px solid #edeae9;
+          transition: border .2s ease-in-out;
+          margin-bottom: 10px;
+        }
+
+        .date {
+          @include flex(column, flex-start, initial, 1vh);
+
+          input {
+            width: 50%;
+            padding: 10px 8px;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid #edeae9;
+            transition: border .2s ease-in-out;
+          }
+
+          label {
+            font-size: 1.2rem;
+            color: #000;
+            font-weight: 500;
+          }
+
+          .period {
+            @include flex(row, flex-start, center, 1vw);
+          }
+
+        }
+
+      }
+
+      button {
+        margin: 0 auto;
+        border-radius: 5px;
+        background: rgb(255,182,0);
+        background: linear-gradient(62deg, rgba(255,182,0,1) 32%, rgba(255,92,74,1) 100%);
+        color: #fff;
+        padding: 7px 15px;
+        border: none;
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+        cursor: pointer;
+        transition: background-color .2s ease-in-out, color ease-in-out .2s;
+        @include flex(row, center, center, .8vw);
+        margin-bottom: 2vh;
+
+        &:hover {
+          background-color: #1D2A48;
+          color: #fff;
+        }
+
+        svg {
+          fill: #FFFFFF;
+        }
       }
     }
 
@@ -316,20 +467,20 @@ export default {
 /* Checkbox styles */
 
 $black: #2D3137;
-$blue: #3785BC;
+  $blue: #1A1C1E;
 $grey: #D6D6D6;
 $white: #FFFFFF;
+
 
 $border-radius: 3px;
 
 @mixin checkbox($color) {
-  margin-right: 1rem;
-  padding-left: 1.75rem;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  padding: 1vh .5vw;
 
   input[type="checkbox"] {
     position: absolute;
@@ -356,8 +507,8 @@ $border-radius: 3px;
     position: absolute;
     left: 0;
     top: -2px;
-    width:  1.8rem;
-    height: 1.8rem;
+    width:  1.6rem;
+    height: 1.6rem;
     background-color: lighten($black, 65%);
     border: 2px solid lighten($black, 65%);
 

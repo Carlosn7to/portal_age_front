@@ -22,8 +22,8 @@ export default defineComponent({
       dataTypeRv: [
         {title: 'B2C', subtitle: 'Vendas e comissão - Varejo', route: '/rv/b2c/inicio', svg: 'b2c', status: true},
         {title: 'B2B', subtitle: 'Vendas e comissão - Corporativo', route: '/rv/b2b/inicio', svg: 'b2b', status: true},
+        {title: 'Retenção', subtitle: 'Instalação e manutenção', route: '/rv/retencao/supervisor', svg: 'retention', status: true},
         {title: 'Técnica', subtitle: 'Instalação e manutenção', route: '/rv/tecnico/inicio', svg: 'technical', status: false},
-        {title: 'Retenção', subtitle: 'Instalação e manutenção', route: '/rv/tecnico/inicio', svg: 'retention', status: false},
         {title: 'Motoboy', subtitle: 'Instalação e manutenção', route: '/rv/tecnico/inicio', svg: 'motocycle', status: false},
       ],
       search: ''

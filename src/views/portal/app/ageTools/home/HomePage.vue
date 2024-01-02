@@ -2,10 +2,12 @@
 import {defineComponent} from 'vue'
 import SubMenuModules from "@/components/portal/app/_fragments/subMenuModules/SubMenuModules.vue";
 import AntiFraud from "@/components/portal/app/ageTools/tools/home/AntiFraud.vue";
+import ScheduleTechnical from "@/components/portal/app/ageTools/tools/home/ScheduleTechnical.vue";
+import AgeAttendant from "@/components/portal/app/ageTools/tools/home/AgeAttendant.vue"
 
 export default defineComponent({
   name: "HomePage",
-  components: {AntiFraud, SubMenuModules},
+  components: {ScheduleTechnical, AntiFraud, SubMenuModules, AgeAttendant},
   data () {
     return {
       subMenu: [
@@ -17,13 +19,13 @@ export default defineComponent({
           subItems: [
             {title: 'Anti-Fraude'},
             {title: 'Agenda Técnica'},
-            {title: 'Capacidade Técnica'},
+            {title: 'Atendimento'},
           ]},
-        {title: 'Gerenciamento',
-          subItems: [
-            {title: 'Permissões de acesso'},
-            {title: 'Logs'}
-          ]},
+        // {title: 'Gerenciamento',
+        //   subItems: [
+        //     {title: 'Permissões de acesso'},
+        //     {title: 'Logs'}
+        //   ]},
       ],
       page: 'Tela inicial'
     }
@@ -44,12 +46,14 @@ export default defineComponent({
     />
 
     <div class="page-tools">
-      <AntiFraud v-if="page === 'Anti-Fraude'"/>
+      <AntiFraud v-if="page.title === 'Anti-Fraude'"/>
+      <ScheduleTechnical v-if="page.title === 'Agenda Técnica'"/>
+      <AgeAttendant v-if="page.title === 'Atendimento'"/>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 .tools-module {
   width: 100%;
@@ -58,7 +62,7 @@ export default defineComponent({
 
   .page-tools {
     width: 85%;
-    padding: 4vh 2vw;
+    padding: 1vh 1vw;
     height: 100%;
   }
 }

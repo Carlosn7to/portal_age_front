@@ -44,7 +44,7 @@ export default defineComponent({
             <li v-for="(item, indexItem) in group.subItems"
                 :key="indexItem"
                 :class="{'selected' : selected.group === index && selected.item === indexItem}"
-                @click="selected.group = index; selected.item = indexItem; tradePage(item.title)">
+                @click="selected.group = index; selected.item = indexItem; tradePage(item)">
               {{ item.title }}
             </li>
           </ul>

@@ -1,24 +1,69 @@
 <script>
-import {defineComponent} from 'vue'
-import {Chart} from "chart.js/auto";
+import { defineComponent } from 'vue'
+import { Chart } from "chart.js/auto";
+import SelectComponent from '../../../_fragments/select/SelectB2C.vue';
+import { AXIOS } from '../../../../../../../services/api.ts';
+import Cookie from 'js-cookie';
 
 
 export default defineComponent({
   name: "GraphsComponent",
+  component: {
+    SelectComponent
+  },
   data: () => {
     return {
       graph: {
         screen: 'commission'
-      }
+      },
+      vendors: [
+        {
+          collaborator: "Nome do 1 Colaborador",
+          id: 1,
+        },
+        {
+          collaborator: "Nome do 2 Colaborador",
+          id: 2,
+        },
+        {
+          collaborator: "Nome do 3 Colaborador",
+          id: 3,
+        },
+      ],
+      data2: {
+        lastSales: [], 
+      },
     }
   },
   methods: {
+    getData(id) {
+
+
+      AXIOS({
+        url: '',
+        params: {
+          id: id
+        },
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + Cookie.get('token')
+        }
+      }).then((res) => {
+        this.data2.lastSales = res.data[0].lastSales;
+        console.log(res.data[0].lastSales)
+
+      }).catch((error) => {
+        console.log(error)
+      })
+
+
+    },
     graphCommission: function () {
 
 
       const days = Array.from({ length: 31 }, (_, index) => index + 1);
 
-// Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
+      // Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
       const values = days.map(() => Math.floor(Math.random() * 20) + 1);
 
 
@@ -94,7 +139,7 @@ export default defineComponent({
 
       const days = Array.from({ length: 31 }, (_, index) => index + 1);
 
-// Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
+      // Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
       const values = days.map(() => Math.floor(Math.random() * 20) + 1);
 
 
@@ -170,7 +215,7 @@ export default defineComponent({
 
       const days = Array.from({ length: 31 }, (_, index) => index + 1);
 
-// Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
+      // Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
       const values = days.map(() => Math.floor(Math.random() * 20) + 1);
 
 
@@ -246,7 +291,7 @@ export default defineComponent({
 
       const days = Array.from({ length: 31 }, (_, index) => index + 1);
 
-// Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
+      // Criando o array "Values" com valores aleatórios entre 1 e 20 para cada "day"
       const values = days.map(() => Math.floor(Math.random() * 20) + 1);
 
 
@@ -317,75 +362,80 @@ export default defineComponent({
 
       return graphStars
     },
-
+    handleSelectChange(event) {
+      const selectedVendorId = event.target.value;
+      this.getData(selectedVendorId);
+    },
   },
   mounted() {
     this.graphCommission()
     this.graphSales()
     this.graphBonus()
     this.graphStars()
-
   }
 })
 </script>
 
 <template>
-
-    <div class="graphs">
-      <div class="filter">
-        <div class="balance-month">
-          <div class="balance">
-            <h3>Seu balanço</h3>
-            <span>R$ 0,00</span>
-          </div>
-        </div>
-        <div class="week-data" style="display: none">
-          <div class="week">
-            <span>S1</span>
-          </div>
-          <div class="week select">
-            <span>S2</span>
-          </div>
-          <div class="week">
-            <span>S3</span>
-          </div>
-          <div class="week">
-            <span>S4</span>
-          </div>
-          <div class="week">
-            <span>S5</span>
-          </div>
+  <div class="graphs">
+    <div class="filter">
+      <div class="balance-month">
+        <div class="balance">
+          <h3>Seu balanço</h3>
+          <span>R$ 0,00</span>
         </div>
       </div>
-      <div class="list-options">
-        <ul>
-          <li :class="{'select' : graph.screen === 'commission'}" @click="graph.screen = 'commission'">Comissão</li>
-          <li :class="{'select' : graph.screen === 'sales'}" @click="graph.screen = 'sales'">Vendas</li>
-          <li :class="{'select' : graph.screen === 'bonus'}" @click="graph.screen = 'bonus'">Bônus</li>
-          <li :class="{'select' : graph.screen === 'stars'}" @click="graph.screen = 'stars'">Estrelas</li>
-        </ul>
+      <div>
+        <select name="" id="" @change="handleSelectChange">
+          <option :value="vendor.id" v-for="vendor in vendors" :key="vendor.id">{{ vendor.collaborator }}</option>
+        </select>
       </div>
-      <div class="graph">
-
-        <div v-show="graph.screen === 'commission'">
-          <canvas id="graphCommission"></canvas>
+      <div class="week-data" style="display: none">
+        <div class="week">
+          <span>S1</span>
         </div>
-        <div v-show="graph.screen === 'sales'">
-          <canvas id="graphSales"></canvas>
+        <div class="week select">
+          <span>S2</span>
         </div>
-        <div v-show="graph.screen === 'bonus'">
-          <canvas id="graphBonus"></canvas>
+        <div class="week">
+          <span>S3</span>
         </div>
-        <div v-show="graph.screen === 'stars'">
-          <canvas id="graphStars"></canvas>
+        <div class="week">
+          <span>S4</span>
+        </div>
+        <div class="week">
+          <span>S5</span>
         </div>
       </div>
-
     </div>
+    <div class="list-options">
+      <ul>
+        <li :class="{ 'select': graph.screen === 'commission' }" @click="graph.screen = 'commission'">Comissão</li>
+        <li :class="{ 'select': graph.screen === 'sales' }" @click="graph.screen = 'sales'">Vendas</li>
+        <li :class="{ 'select': graph.screen === 'bonus' }" @click="graph.screen = 'bonus'">Bônus</li>
+        <li :class="{ 'select': graph.screen === 'stars' }" @click="graph.screen = 'stars'">Estrelas</li>
+      </ul>
+    </div>
+    <div class="graph">
+
+      <div v-show="graph.screen === 'commission'">
+        <canvas id="graphCommission"></canvas>
+      </div>
+      <div v-show="graph.screen === 'sales'">
+        <canvas id="graphSales"></canvas>
+      </div>
+      <div v-show="graph.screen === 'bonus'">
+        <canvas id="graphBonus"></canvas>
+      </div>
+      <div v-show="graph.screen === 'stars'">
+        <canvas id="graphStars"></canvas>
+      </div>
+    </div>
+    
+  </div>
 </template>
 
 <style scoped lang="scss">
-
 .graphs {
   background-color: #fff;
   border-radius: 1vw;
@@ -405,6 +455,7 @@ export default defineComponent({
           font-weight: 500;
           color: rgba(95, 104, 122, 0.70);
         }
+
         span {
           color: #000;
           font-weight: 600;
@@ -423,11 +474,13 @@ export default defineComponent({
 
       .week {
         padding: 5px 10px;
+
         span {
           color: #00000050;
           font-weight: 600;
           font-size: 1.4rem;
         }
+
         transition: background-color ease-in-out .2s;
         cursor: pointer;
         border-radius: 5px;
@@ -474,6 +527,7 @@ export default defineComponent({
   .graph {
     width: 100%;
     height: 88%;
+
     div {
       padding: 4vh 4vw;
 
@@ -482,5 +536,4 @@ export default defineComponent({
     }
   }
 }
-
 </style>
